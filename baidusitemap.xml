@@ -884,28 +884,6 @@
 
     
   <url>
-    <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8Bshape%E4%BD%BF%E7%94%A8.html</loc>
-    <lastmod>2016-07-29T01:19:10.922Z</lastmod>
-    <data>
-        <display>
-        <title>Android基础之shape使用</title>
-        <pubTime>2015-09-26T06:17:42.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Shape</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://ittiger.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8BTableLayout%E4%B8%ADTextView%E6%96%87%E6%9C%AC%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C.html</loc>
     <lastmod>2016-07-29T01:19:10.922Z</lastmod>
     <data>
@@ -940,6 +918,28 @@
         <tag>Activity</tag>
          
         <tag>生命周期</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://ittiger.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8Bshape%E4%BD%BF%E7%94%A8.html</loc>
+    <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+    <data>
+        <display>
+        <title>Android基础之shape使用</title>
+        <pubTime>2015-09-26T06:17:42.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Shape</tag>
          
          
            
