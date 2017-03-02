@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Hexo搭建静态博客 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言前段时间因为我的WordPress博客进入后台非常慢，严重影响操作使用，再加上服务器时间的限制，所以就讲博客从WordPress迁移到了Hexo上，这篇文章记录下我创建Hexo博客的一些流程步骤。
+HexoHexo是一个简单地、轻量地、基于NodeJS的一个静态博客框架，可以方便的生成静态网页托管在github或者是国内的coding.net上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo搭建静态博客">
+<meta property="og:url" content="http://ittiger.cn/create-hexo-blog.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="前言前段时间因为我的WordPress博客进入后台非常慢，严重影响操作使用，再加上服务器时间的限制，所以就讲博客从WordPress迁移到了Hexo上，这篇文章记录下我创建Hexo博客的一些流程步骤。
+HexoHexo是一个简单地、轻量地、基于NodeJS的一个静态博客框架，可以方便的生成静态网页托管在github或者是国内的coding.net上">
+<meta property="og:updated_time" content="2016-09-29T02:00:44.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo搭建静态博客">
+<meta name="twitter:description" content="前言前段时间因为我的WordPress博客进入后台非常慢，严重影响操作使用，再加上服务器时间的限制，所以就讲博客从WordPress迁移到了Hexo上，这篇文章记录下我创建Hexo博客的一些流程步骤。
+HexoHexo是一个简单地、轻量地、基于NodeJS的一个静态博客框架，可以方便的生成静态网页托管在github或者是国内的coding.net上">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-create-hexo-blog" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Hexo搭建静态博客
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/create-hexo-blog.html">
+            <time datetime="2016-09-22T12:41:09.000Z" itemprop="datePublished">2016-09-22</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Blog/">Blog</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Hexo/">Hexo</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前段时间因为我的WordPress博客进入后台非常慢，严重影响操作使用，再加上服务器时间的限制，所以就讲博客从WordPress迁移到了Hexo上，这篇文章记录下我创建Hexo博客的一些流程步骤。</p>
+<h3 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h3><p>Hexo是一个简单地、轻量地、基于NodeJS的一个静态博客框架，可以方便的生成静态网页托管在github或者是国内的coding.net上</p>
+<a id="more"></a>
+<h3 id="Github-Pages"><a href="#Github-Pages" class="headerlink" title="Github Pages"></a>Github Pages</h3><p>GitHub Pages 可以被认为是用户编写的、托管在github上的静态网页。因为Github的空间免费稳定， 因此可以用于将自己的静态站点托管在github上来搭建自己的个人博客站点。另外国内的coding.net也支持Pages服务，同样可以进行托管静态网页。</p>
+<p>Github上生成的网站的默认域名一般都是<code>username.github.io</code>，这里的username是指你在github上注册的用户名，当然github的网站也支持自定义绑定域名。</p>
+<h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>因为我们要将最终的静态网页文件推送到github上，所以第一步我们需要先在机器上安装Git，Git下载地址：<a href="https://git-for-windows.github.io/，安装完成之后配置好相关全局参数，如user，email等" target="_blank" rel="external">https://git-for-windows.github.io/，安装完成之后配置好相关全局参数，如user，email等</a></p>
+<h3 id="安装NodeJS"><a href="#安装NodeJS" class="headerlink" title="安装NodeJS"></a>安装NodeJS</h3><p>因为Hexo是基于NodeJS的，所以还需要安装NodeJS，下载地址：<a href="http://nodejs.org/" target="_blank" rel="external">http://nodejs.org/</a></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>在磁盘上任意目录下右键鼠标选择Git Bash，使用如下命令进行Hexo的安装<br><code>npm install -g hexo</code></p>
+<h3 id="创建Hexo项目"><a href="#创建Hexo项目" class="headerlink" title="创建Hexo项目"></a>创建Hexo项目</h3><h4 id="初始化Hexo项目"><a href="#初始化Hexo项目" class="headerlink" title="初始化Hexo项目"></a>初始化Hexo项目</h4><p>在磁盘上新建一个文件夹作为自己Hexo项目的根目录，如：<code>D:\Hexo</code>，在此目录下右键鼠标选择Git Bash，然后执行如下命令进行Hexo项目的初始化<br><code>hexo init</code></p>
+<h4 id="安装Hexo项目依赖"><a href="#安装Hexo项目依赖" class="headerlink" title="安装Hexo项目依赖"></a>安装Hexo项目依赖</h4><p><code>npm install</code></p>
+<h4 id="本地查看Hexo站点"><a href="#本地查看Hexo站点" class="headerlink" title="本地查看Hexo站点"></a>本地查看Hexo站点</h4><p>依赖安装完成之后，Hexo项目就算建好了，接下来我们使用如下命令检查项目是否成功创建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo generate		//此命令表示生成静态文件</div><div class="line">hexo server       //比命令表示启动服务，启动之后在本地可以查看站点</div></pre></td></tr></table></figure></p>
+<p>执行上述两个命令之后，可以在命令行上看到提示，在浏览器中访问<code>http://localhost:4000</code>，可以成功访问则表示你的Hexo项目创建成功了。</p>
+<h3 id="创建Github仓库"><a href="#创建Github仓库" class="headerlink" title="创建Github仓库"></a>创建Github仓库</h3><p>在github上创建一个与自己账户名一致的仓库：账号名.github.io，当然没有github账号的赶紧先去注册一个账号。</p>
+<h3 id="生成SSH密钥"><a href="#生成SSH密钥" class="headerlink" title="生成SSH密钥"></a>生成SSH密钥</h3><p>执行如下命令生成SSH密钥<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -C “你的邮箱地址”，按3个回车，密码为空</div></pre></td></tr></table></figure></p>
+<p>执行完成之后，在<code>C:\Users\Administrator\.ssh</code>下会生成两个文件<code>id_rsa</code>和<code>id_rsa.pub</code></p>
+<p>打开<code>id_rsa.pub</code>，复制全文，打开<a href="https://github.com/settings/ssh，Add" target="_blank" rel="external">https://github.com/settings/ssh，Add</a> SSH key，粘贴复制的文本内容</p>
+<p>这样设置之后，将静态文件从本地推送到github上时就不要输入用户名和密码了，当然也可以不设置github的ssh，这样的话在推送文件到github上时会提示你输入用户名和密码</p>
+<h3 id="配置Hexo项目"><a href="#配置Hexo项目" class="headerlink" title="配置Hexo项目"></a>配置Hexo项目</h3><h4 id="Hexo目录结构"><a href="#Hexo目录结构" class="headerlink" title="Hexo目录结构"></a>Hexo目录结构</h4><p>Hexo项目创建成功之后，我们在项目根目录下会发现这样几个我们经常用到的目录</p>
+<ol>
+<li><code>source</code> 这个目录是用来存放我们写的博客文件</li>
+<li><code>themes</code> 这个目录里是所有hexo安装的主题</li>
+<li><code>_config.yml</code> 这个文件是Hexo项目的主配置文件</li>
+</ol>
+<h4 id="配置Hexo"><a href="#配置Hexo" class="headerlink" title="配置Hexo"></a>配置Hexo</h4><p>使用文本编辑器打开上面介绍的<code>_config.yml</code>文件，按照<a href="https://hexo.io/docs/configuration.html" target="_blank" rel="external">官网https://hexo.io/docs/configuration.html</a>上的提示配置好相关配置，具体配置细节我就不多介绍了，自己在官网上看吧</p>
+<p>我只介绍一个配置项<code>deploy</code>配置，这个配置就是用来配置你的静态站点是要部署到哪个上面，一般都是用github，以我的配置为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  <span class="built_in">type</span>: git</div><div class="line">  repo: https://github.com/huyongli/huyongli.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure></p>
+<p>注意配置参数与值之间是需要有一个空格的，不然配置是无法生效的，<code>type</code>表示我们使用的是<code>git</code>，<code>repo</code>表示你<code>github</code>上的仓库地址，<code>branch</code>表示你仓库的分支，一般默认都是<code>master</code></p>
+<h4 id="部署Hexo"><a href="#部署Hexo" class="headerlink" title="部署Hexo"></a>部署Hexo</h4><p>配置完Hexo之后，就可以将Hexo站点部署到github上了，执行如下命令进行部署：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<p>如果在部署的过程中出现如下错误：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR Deployer not found: git</div><div class="line"></div><div class="line">执行如下命令：</div><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
+<p>在创建Hexo或是部署的过程中可能会多次出现类似的错误，一般都是使用<code>npm install hexo-deployer-XXX --save</code>类似的命令进行插件安装</p>
+<p>上述命令执行成功后，重新部署，部署成功后，命令行上会提示<code>Deploy done: git</code></p>
+<p>成功部署后，过个几分钟就可以在浏览器上通过你的仓库地址访问你的博客了，还是以我的为例：<code>http://huyongli.github.io</code></p>
+<h3 id="安装Hexo主题"><a href="#安装Hexo主题" class="headerlink" title="安装Hexo主题"></a>安装Hexo主题</h3><p>Hexo默认的主题很丑，如果想自己的博客看着舒服的话，需要安装另外的主题插件，我使用主题的是<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">next</a></p>
+<p>进入<code>next</code>主题主页<code>https://github.com/iissnan/hexo-theme-next</code><br>将此主题代码完整下下来，然后解压放到<code>Hexo</code>根目录下的<code>themes</code>目录下，然后将hexo项目的主题配置修改为next：<code>theme: next</code></p>
+<p>至于<code>next</code>主题的具体配置参考该主题的详细使用介绍吧<a href="http://theme-next.iissnan.com/" target="_blank" rel="external">http://theme-next.iissnan.com/</a></p>
+<p>到此，整个Hexo的安装部署就结束了</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/create-hexo-blog.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/create-hexo-blog.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/在线视频播放App的实现.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    在线视频播放App的实现
+                
+            </div>
+        </a>
+    
+    
+        <a href="/Retrofit2文件上传下载及其进度显示.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Retrofit2文件上传下载及其进度显示</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="create-hexo-blog.html" data-title="Hexo搭建静态博客" data-url="http://ittiger.cn/create-hexo-blog.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

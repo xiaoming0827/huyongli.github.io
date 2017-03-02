@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>http://ittiger.cn/tags/Java/</loc>
+        <lastmod>2016-07-28T05:29:47.488Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Lucene/</loc>
+        <lastmod>2016-07-28T05:29:47.488Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/TableLayout/</loc>
+        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Activity/</loc>
+        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</loc>
+        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Shape/</loc>
+        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Zip%E8%A7%A3%E5%8E%8B/</loc>
+        <lastmod>2016-07-29T01:19:10.938Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E9%80%80%E5%87%BAApp/</loc>
+        <lastmod>2016-07-29T01:19:10.938Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/JavaScript/</loc>
+        <lastmod>2016-07-29T01:19:11.100Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/JSONP/</loc>
+        <lastmod>2016-07-29T01:19:11.100Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E7%9B%B8%E6%9C%BA/</loc>
+        <lastmod>2016-07-29T01:19:11.396Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E5%B4%A9%E6%BA%83/</loc>
+        <lastmod>2016-07-29T01:19:11.396Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BE/</loc>
+        <lastmod>2016-07-29T05:50:54.202Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E5%AF%BC%E8%88%AA/</loc>
+        <lastmod>2016-07-29T05:50:54.202Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/OkHttp/</loc>
+        <lastmod>2016-07-29T06:06:17.815Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/TigerOkHttp/</loc>
+        <lastmod>2016-07-29T06:06:17.815Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/AndroidStudio/</loc>
+        <lastmod>2016-08-04T07:50:08.075Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/SQLite/</loc>
+        <lastmod>2016-08-04T07:50:08.194Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/ORM/</loc>
+        <lastmod>2016-08-04T07:50:08.194Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/TigerDB/</loc>
+        <lastmod>2016-08-04T07:50:08.194Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Apache/</loc>
+        <lastmod>2016-08-04T07:50:08.201Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/MySQL/</loc>
+        <lastmod>2016-08-04T07:50:08.222Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/vsftpd/</loc>
+        <lastmod>2016-08-04T07:50:08.226Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Tips/</loc>
+        <lastmod>2016-08-30T02:53:07.669Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Hexo/</loc>
+        <lastmod>2016-09-29T02:00:44.926Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Linux/</loc>
+        <lastmod>2016-09-29T02:01:34.633Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E9%98%BF%E9%87%8C%E4%BA%91/</loc>
+        <lastmod>2016-09-29T02:01:34.633Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/WordPress/</loc>
+        <lastmod>2016-09-29T02:01:34.633Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Openfire/</loc>
+        <lastmod>2016-09-29T08:23:18.338Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/smack/</loc>
+        <lastmod>2016-09-29T08:23:18.338Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/IM/</loc>
+        <lastmod>2016-09-29T08:23:18.338Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Retrofit/</loc>
+        <lastmod>2016-10-14T06:49:38.456Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/RxJava/</loc>
+        <lastmod>2016-11-07T10:07:51.069Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/SpannableStringBuilder/</loc>
+        <lastmod>2016-11-07T10:07:51.073Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/TextView/</loc>
+        <lastmod>2016-11-07T10:07:51.073Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/IndexStickyView/</loc>
+        <lastmod>2016-12-30T10:51:30.126Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E8%B5%84%E6%BA%90%E9%80%82%E9%85%8D/</loc>
+        <lastmod>2017-02-28T03:04:29.522Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/9-png/</loc>
+        <lastmod>2017-02-28T03:04:29.631Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/RecyclerView/</loc>
+        <lastmod>2017-02-28T03:04:29.662Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Android/</loc>
+        <lastmod>2017-03-01T02:08:58.720Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Behavior/</loc>
+        <lastmod>2017-03-01T02:08:58.720Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+</urlset>
+<!-- XML Sitemap generated by Hexo SEO Friendly Sitemap Generator -->

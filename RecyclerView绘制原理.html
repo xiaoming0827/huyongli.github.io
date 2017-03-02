@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>RecyclerView绘制原理 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="RecyclerView基本使用12345678910//首先设置RecyclerView的布局管理模式mRecyclerView.setLayoutManager(new LinearLayoutManager(this));mAdapter = new MyAdapter(getData());//设置Item项的UI装饰器mRecyclerView.addItemDecoration(new">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerView绘制原理">
+<meta property="og:url" content="http://ittiger.cn/RecyclerView绘制原理.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="RecyclerView基本使用12345678910//首先设置RecyclerView的布局管理模式mRecyclerView.setLayoutManager(new LinearLayoutManager(this));mAdapter = new MyAdapter(getData());//设置Item项的UI装饰器mRecyclerView.addItemDecoration(new">
+<meta property="og:updated_time" content="2016-08-04T07:50:08.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerView绘制原理">
+<meta name="twitter:description" content="RecyclerView基本使用12345678910//首先设置RecyclerView的布局管理模式mRecyclerView.setLayoutManager(new LinearLayoutManager(this));mAdapter = new MyAdapter(getData());//设置Item项的UI装饰器mRecyclerView.addItemDecoration(new">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-RecyclerView绘制原理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            RecyclerView绘制原理
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/RecyclerView绘制原理.html">
+            <time datetime="2016-05-20T12:38:28.000Z" itemprop="datePublished">2016-05-20</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/RecyclerView/">RecyclerView</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="RecyclerView基本使用"><a href="#RecyclerView基本使用" class="headerlink" title="RecyclerView基本使用"></a>RecyclerView基本使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//首先设置RecyclerView的布局管理模式</span></div><div class="line">mRecyclerView.setLayoutManager(<span class="keyword">new</span> LinearLayoutManager(<span class="keyword">this</span>));</div><div class="line">mAdapter = <span class="keyword">new</span> MyAdapter(getData());</div><div class="line"><span class="comment">//设置Item项的UI装饰器</span></div><div class="line">mRecyclerView.addItemDecoration(<span class="keyword">new</span> RecyclerItemDecoration(LinearLayoutManager.VERTICAL));</div><div class="line"><span class="comment">//设置Item项的不同操作的动画</span></div><div class="line">mRecyclerView.setItemAnimator(<span class="keyword">new</span> DefaultItemAnimator());</div><div class="line"><span class="comment">//设置数据开始装配</span></div><div class="line">mRecyclerView.setAdapter(mAdapter);</div><div class="line">RecyclerView原理分析</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="Adapter数据适配"><a href="#Adapter数据适配" class="headerlink" title="Adapter数据适配"></a>Adapter数据适配</h3><p><code>RecyclerView.Adapter</code>类中有一个很重要的属性：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Adapter中被观察对象</span></div><div class="line">Observale&lt;AdapterDataObserver&gt;</div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> AdapterDataObservable mObservable = <span class="keyword">new</span> AdapterDataObservable();</div></pre></td></tr></table></figure></p>
+<p><code>RecyclerView</code>中也有一个很重要的属性<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//数据观察者, AdapterDataObserver实例</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> RecyclerViewDataObserver mObserver = <span class="keyword">new</span> RecyclerViewDataObserver();</div></pre></td></tr></table></figure></p>
+<p>当使用<code>recyclerView.setAdapter(data)</code>设置数据时，会调用以下方法使得<code>RecyclerView</code>成为Adapter的观察者(间接)：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setAdapterInternal</span><span class="params">(Adapter adapter, </span></span></div><div class="line">        <span class="keyword">boolean</span> compatibleWithPrevious,</div><div class="line">        <span class="keyword">boolean</span> removeAndRecycleViews) &#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (adapter != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">//通过此处添加观察者，此时RecyclerView就会对Adapter中的数据进行观察监听</span></div><div class="line">        adapter.registerAdapterDataObserver(mObserver);</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通常当我们改变Adapter中的数据源时，一般都会通过调用<code>Adapter.notifyDataSetChanged()</code>方法来刷新列表，我们来看看这个方法的实现，看看Adapter是如何通过这个方法来刷新列表的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">notifyDataSetChanged</span><span class="params">()</span> </span>&#123;</div><div class="line">    mObservable.notifyChanged();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们接着看<code>AdapterDataObservable.notifyChanged()</code>方法实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//mObservers是Observable中的属性，是一个ArrayList&lt;T&gt;</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyChanged</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = mObservers.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">        mObservers.get(i).onChanged();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们再来看<code>RecyclerViewDataObserver.onChanged()</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChanged</span><span class="params">()</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="comment">//Adapter目前没有待更新的数据</span></div><div class="line">    <span class="keyword">if</span> (!mAdapterHelper.hasPendingUpdates()) &#123;</div><div class="line">        requestLayout();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看到<code>requestLayout()</code>这个方法，我们就明白了，调用此方法后系统会重新<code>measure, layout, draw</code>，这样列表视图就会被更新。</p>
+<h3 id="RecyclerView-onMeasure"><a href="#RecyclerView-onMeasure" class="headerlink" title="RecyclerView.onMeasure()"></a>RecyclerView.onMeasure()</h3><p>我们来看看<code>RecyclerView</code>的测量方法<code>onMeasure</code>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthSpec, <span class="keyword">int</span> heightSpec)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (mLayout.mAutoMeasure) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> widthMode = MeasureSpec.getMode(widthSpec);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> heightMode = MeasureSpec.getMode(heightSpec);</div><div class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> skipMeasure = widthMode == MeasureSpec.EXACTLY  &amp;&amp; heightMode == MeasureSpec.EXACTLY;</div><div class="line">        <span class="comment">//委托给LayoutManager来进行测量</span></div><div class="line">        mLayout.onMeasure(mRecycler, mState, widthSpec, heightSpec);</div><div class="line">        <span class="keyword">if</span> (skipMeasure || mAdapter == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (mState.mLayoutStep == State.STEP_START) &#123;</div><div class="line">            dispatchLayoutStep1();</div><div class="line">        &#125;</div><div class="line">        mLayout.setMeasureSpecs(widthSpec, heightSpec);</div><div class="line">        mState.mIsMeasuring = <span class="keyword">true</span>;</div><div class="line">        dispatchLayoutStep2();</div><div class="line">        mLayout.setMeasuredDimensionFromChildren(widthSpec, heightSpec);</div><div class="line">        ......</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面<code>onMeasure</code>方法中<code>mLayout</code>变量就是我们上面设置的<code>LinearLayoutManager</code>实例，而<code>LinearLayoutManager</code>的构造函数中给变量<code>mAutoMeasure</code>值设置为true，因此测量时就会执行上面的代码，通过上面的方法我们可以看到此处测量分为两种：</p>
+<p>当<code>RecyclerView</code>的宽高设置为<code>match_parent</code>或具体值的时候，<code>skipMeasure=true</code>，此时会只需要测量其自身的宽高就可以知道RecyclerView的大小，这时是<code>onMeasure</code>方法测量结束。<br>当RecyclerView的宽高设置为<code>wrap_content</code>时，<code>skipMeasure=false</code>，<code>onMeasure</code>会继续执行下面的<code>dispatchLayoutStep2()</code>，其实就是测量RecyclerView的子视图的大小最终确定<code>RecyclerView</code>的实际大小，这种情况真正的测量操作都是在方法<code>dispatchLayoutStep2()</code>里执行的:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dispatchLayoutStep2</span><span class="params">()</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    mState.mItemCount = mAdapter.getItemCount();</div><div class="line">    <span class="comment">// Step 2: Run layout</span></div><div class="line">    mState.mInPreLayout = <span class="keyword">false</span>;</div><div class="line">    mLayout.onLayoutChildren(mRecycler, mState);</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从这里也可以看出<code>RecyclerView</code>真正的测量是委托给<code>LayoutManager</code>在处理，我们看看<code>LinearLayoutManager</code>的<code>onLayoutChildren</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLayoutChildren</span><span class="params">(RecyclerView.Recycler recycler, RecyclerView.State state)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (mAnchorInfo.mLayoutFromEnd) &#123;</div><div class="line">        ...</div><div class="line">        fill(recycler, mLayoutState, state, <span class="keyword">false</span>);</div><div class="line">        ......</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        ......</div><div class="line">        fill(recycler, mLayoutState, state, <span class="keyword">false</span>);</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">    layoutForPredictiveAnimations(recycler, state, startOffset, endOffset);</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很明显可以看到，最终执行了fill()方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fill</span><span class="params">(RecyclerView.Recycler recycler, LayoutState layoutState, RecyclerView.State state, <span class="keyword">boolean</span> stopOnFocusable)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    LayoutChunkResult layoutChunkResult = <span class="keyword">new</span> LayoutChunkResult();</div><div class="line">    <span class="keyword">while</span> ((layoutState.mInfinite || remainingSpace &gt; <span class="number">0</span>) &amp;&amp; layoutState.hasMore(state)) &#123;</div><div class="line">        layoutChunkResult.resetInternal();</div><div class="line">        layoutChunk(recycler, state, layoutState, layoutChunkResult);</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的while判断条件中remainingSpace可以理解为当前列表中是否还有多余的位置可用于添加绘制child，而<code>layoutState.hasMore(state)</code>则是判断当前绘制的child索引位置是否在Adapter数据范围内<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">hasMore</span><span class="params">(RecyclerView.State state)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> mCurrentPosition &gt;= <span class="number">0</span> &amp;&amp; mCurrentPosition &lt; state.getItemCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>再来看上面的<code>layoutChunk()</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">layoutChunk</span><span class="params">(RecyclerView.Recycler recycler, RecyclerView.State state,</span></span></div><div class="line">        LayoutState layoutState, LayoutChunkResult result) &#123;</div><div class="line">    View view = layoutState.next(recycler);</div><div class="line">    ......</div><div class="line">    LayoutParams params = (LayoutParams) view.getLayoutParams();</div><div class="line">    <span class="keyword">if</span> (layoutState.mScrapList == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (mShouldReverseLayout == (layoutState.mLayoutDirection</div><div class="line">                == LayoutState.LAYOUT_START)) &#123;</div><div class="line">            addView(view);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            addView(view, <span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">if</span> (mShouldReverseLayout == (layoutState.mLayoutDirection</div><div class="line">                == LayoutState.LAYOUT_START)) &#123;</div><div class="line">            addDisappearingView(view);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            addDisappearingView(view, <span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    measureChildWithMargins(view, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    ......</div><div class="line">    <span class="comment">// To calculate correct layout position, we subtract margins.</span></div><div class="line">    layoutDecorated(view, left + params.leftMargin, top + params.topMargin, right - params.rightMargin, bottom -  params.bottomMargin);</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的方法中<code>addView</code>与<code>addDisappearingView</code>最终都是调用的<code>RecyclerView</code>的<code>addView</code>方法，也就是将子<code>child</code>添加到<code>RecyclerView</code>中。</p>
+<p>我们再来看看<code>View view = layoutState.next(recycler);</code>这行代码的实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function">View <span class="title">next</span><span class="params">(RecyclerView.Recycler recycler)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (mScrapList != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> nextViewFromScrapList();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">final</span> View view = recycler.getViewForPosition(mCurrentPosition);</div><div class="line">    <span class="comment">//获取某个位置需要展示的View</span></div><div class="line"></div><div class="line">    mCurrentPosition += mItemDirection;</div><div class="line">    <span class="comment">//将当前绘制的child的索引下移一位，配合while循环</span></div><div class="line">    <span class="keyword">return</span> view;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们看看上面的获取position位置的view是如何获取的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="function">View <span class="title">getViewForPosition</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">boolean</span> dryRun)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    ViewHolder holder = <span class="keyword">null</span>;</div><div class="line">    <span class="comment">// 0) If there is a changed scrap, try to find from there</span></div><div class="line">    <span class="keyword">if</span> (mState.isPreLayout()) &#123;</div><div class="line">        holder = getChangedScrapViewForPosition(position);</div><div class="line">        fromScrap = holder != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 1) Find from scrap by position</span></div><div class="line">    <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123;</div><div class="line">        holder = getScrapViewForPosition(position, INVALID_TYPE, dryRun);</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> offsetPosition = mAdapterHelper.findPositionOffset(position);</div><div class="line">        ......</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> type = mAdapter.getItemViewType(offsetPosition);</div><div class="line">        <span class="comment">// 2) Find from scrap via stable ids, if exists</span></div><div class="line">        <span class="keyword">if</span> (mAdapter.hasStableIds()) &#123;</div><div class="line">            holder = getScrapViewForId(mAdapter.getItemId(offsetPosition), type, dryRun);</div><div class="line">            ......</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//mViewCacheExtension的缓存是由开发者自己实现来控制ViewHolder的缓存策略</span></div><div class="line">        <span class="keyword">if</span> (holder == <span class="keyword">null</span> &amp;&amp; mViewCacheExtension != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// We are NOT sending the offsetPosition because LayoutManager does not</span></div><div class="line">            <span class="comment">// know it.</span></div><div class="line">            <span class="keyword">final</span> View view = mViewCacheExtension.getViewForPositionAndType(<span class="keyword">this</span>, position, type);</div><div class="line">            <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</div><div class="line">                holder = getChildViewHolder(view);</div><div class="line">               ......</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123; <span class="comment">// fallback to recycler</span></div><div class="line">            ......</div><div class="line">            holder = getRecycledViewPool().getRecycledView(type);</div><div class="line">           ......</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123;</div><div class="line">            holder = mAdapter.createViewHolder(RecyclerView.<span class="keyword">this</span>, type);</div><div class="line">            ......</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> bound = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (mState.isPreLayout() &amp;&amp; holder.isBound()) &#123;</div><div class="line">        <span class="comment">// do not update unless we absolutely have to.</span></div><div class="line">        holder.mPreLayoutPosition = position;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!holder.isBound() || holder.needsUpdate() || holder.isInvalid()) &#123;</div><div class="line">        ......</div><div class="line">        holder.mOwnerRecyclerView = RecyclerView.<span class="keyword">this</span>;</div><div class="line">        <span class="comment">//此处就是调用Adapter中bindViewHolder方法</span></div><div class="line">        mAdapter.bindViewHolder(holder, offsetPosition);</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">    <span class="keyword">return</span> holder.itemView;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>将指定位置的View获取得到之后添加到RecyclerView中，紧接着再来看后面执行的<code>measureChildWithMargins</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">measureChildWithMargins</span><span class="params">(View child, <span class="keyword">int</span> widthUsed, <span class="keyword">int</span> heightUsed)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> LayoutParams lp = (LayoutParams) child.getLayoutParams();</div><div class="line">    <span class="comment">//通过ItemDecorate获取offset</span></div><div class="line">    <span class="keyword">final</span> Rect insets = mRecyclerView.getItemDecorInsetsForChild(child);</div><div class="line">    widthUsed += insets.left + insets.right;</div><div class="line">    heightUsed += insets.top + insets.bottom;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> widthSpec = getChildMeasureSpec(getWidth(), getWidthMode(), getPaddingLeft() + getPaddingRight() + lp.leftMargin + lp.rightMargin + widthUsed, lp.width, canScrollHorizontally());</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> heightSpec = getChildMeasureSpec(getHeight(), getHeightMode(), getPaddingTop() + getPaddingBottom() + lp.topMargin + lp.bottomMargin + heightUsed, lp.height, canScrollVertically());</div><div class="line">    <span class="keyword">if</span> (shouldMeasureChild(child, widthSpec, heightSpec, lp)) &#123;</div><div class="line">        child.measure(widthSpec, heightSpec);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>该方法中调用<code>mRecyclerView.getItemDecorInsetsForChild(child);</code>获取child的offset，然后对child重新测量绘制：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function">Rect <span class="title">getItemDecorInsetsForChild</span><span class="params">(View child)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> decorCount = mItemDecorations.size();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; decorCount; i++) &#123;</div><div class="line">        mTempRect.set(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">        mItemDecorations.get(i).getItemOffsets(mTempRect, child, <span class="keyword">this</span>, mState);</div><div class="line">        insets.left += mTempRect.left;</div><div class="line">        insets.top += mTempRect.top;</div><div class="line">        insets.right += mTempRect.right;</div><div class="line">        insets.bottom += mTempRect.bottom;</div><div class="line">    &#125;</div><div class="line">    lp.mInsetsDirty = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">return</span> insets;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个里面的<code>mItemDecorations</code>就是文章开头例子中我通过<code>mRecyclerView.addItemDecoration(new RecyclerItemDecoration(LinearLayoutManager.VERTICAL));</code>添加的Item装饰器<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layoutDecorated</span><span class="params">(View child, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> Rect insets = ((LayoutParams) child.getLayoutParams()).mDecorInsets;</div><div class="line">    child.layout(left + insets.left, top + insets.top, right - insets.right, bottom - insets.bottom);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看到<code>layoutDecorated</code>方法中直接调用了View的layout方法对child视图进行layout布局。</p>
+<p>到此RecyclerView列表中Item项视图的measure和layout实际上已经完成。</p>
+<h3 id="RecyclerView-onLayout"><a href="#RecyclerView-onLayout" class="headerlink" title="RecyclerView.onLayout"></a>RecyclerView.onLayout</h3><p>看完<code>onMeasure</code>方法，再来看看<code>onLayout</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, </span></span></div><div class="line">        <span class="keyword">int</span> r, <span class="keyword">int</span> b) &#123;</div><div class="line">    TraceCompat.beginSection(TRACE_ON_LAYOUT_TAG);</div><div class="line">    dispatchLayout();</div><div class="line">    TraceCompat.endSection();</div><div class="line">    mFirstLayoutComplete = <span class="keyword">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">dispatchLayout</span><span class="params">()</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    mState.mIsMeasuring = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">if</span> (mState.mLayoutStep == State.STEP_START) &#123;</div><div class="line">        ......</div><div class="line">        dispatchLayoutStep2();</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mAdapterHelper.hasUpdates() || mLayout.getWidth() != getWidth() || mLayout.getHeight() != getHeight()) &#123;</div><div class="line">        ......</div><div class="line">        dispatchLayoutStep2();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// always make sure we sync them (to ensure mode is exact)</span></div><div class="line">        mLayout.setExactMeasureSpecsFrom(<span class="keyword">this</span>);</div><div class="line">    &#125;</div><div class="line">    dispatchLayoutStep3();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过<code>dispatchLayout</code>方法可以看到onLayout中又执行了我们前面分析过的<code>dispatchLayoutStep2()</code>方法，在最后又执行了一个<code>dispatchLayoutStep3()</code>方法，我们再来看看这个：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dispatchLayoutStep3</span><span class="params">()</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (mState.mRunSimpleAnimations) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = mChildHelper.getChildCount() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">            ViewHolder holder = getChildViewHolderInt(mChildHelper.getChildAt(i));</div><div class="line">            ......</div><div class="line">            <span class="keyword">final</span> ItemHolderInfo animationInfo = mItemAnimator</div><div class="line">                    .recordPostLayoutInformation(mState, holder);</div><div class="line">            ......</div><div class="line">            <span class="keyword">if</span> (oldChangeViewHolder != <span class="keyword">null</span> &amp;&amp; !oldChangeViewHolder.shouldIgnore()) &#123;</div><div class="line">                ......</div><div class="line">                <span class="keyword">if</span> (oldDisappearing &amp;&amp; oldChangeViewHolder == holder) &#123;</div><div class="line">                    <span class="comment">//此处会执行动画</span></div><div class="line">                    <span class="comment">// run disappear animation instead of change</span></div><div class="line">                    mViewInfoStore.addToPostLayout(holder, animationInfo);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    ......</div><div class="line">                    <span class="keyword">if</span> (preInfo == <span class="keyword">null</span>) &#123;</div><div class="line">                        handleMissingPreInfoForChangeError(key, holder, oldChangeViewHolder);</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;</div><div class="line">                        <span class="comment">//此方法最终调用DefaultItemAnimate的相关动画</span></div><div class="line">                        animateChange(oldChangeViewHolder, holder, preInfo, postInfo, oldDisappearing, newDisappearing);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                mViewInfoStore.addToPostLayout(holder, animationInfo);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// Step 4: Process view info lists and trigger animations</span></div><div class="line">        mViewInfoStore.process(mViewInfoProcessCallback);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的方法中调用了<code>ItemAnimation</code>动画类的相关方法</p>
+<h3 id="RecyclerView-onDraw"><a href="#RecyclerView-onDraw" class="headerlink" title="RecyclerView.onDraw"></a>RecyclerView.onDraw</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas c)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.onDraw(c);</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> count = mItemDecorations.size();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">        mItemDecorations.get(i).onDraw(c, <span class="keyword">this</span>, mState);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到<code>ItemDecoration</code>的<code>onDraw</code>方法是在此处调用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas c)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.draw(c);</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> count = mItemDecorations.size();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">        mItemDecorations.get(i).onDrawOver(c, <span class="keyword">this</span>, mState);</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个地方可以看到<code>ItemDecoration</code>的<code>onDrawOver</code>方法是在此处调用</p>
+<p>到这里，RecyclerView使用过程中比较常用的几个类(<code>LayoutManager, ItemDecoration, ItemAnimation</code>)的主要作用及使用场景有了个大概的了解。</p>
+<p>在RecyclerView中是没有为我们内置Item的单击和长按事件监听接口的，一般为Item设置单击和长按监听都是是直接在Adapter初始化Item视图时，为我们的Item视图直接设置单击监听和长按监听，这种方式与Adapter的耦合度比较高，而且频繁的为view设置监听对象，感觉不太好。其实RecyclerView中为我们提供了一个类<code>OnItemTouchListener</code>通过这个类再结合手势<code>GestureDetector</code>完全可以实现一个耦合度更低复用度更高的单击和长按监听。我们再来看看<code>OnItemTouchListener</code>的实现方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (dispatchOnItemTouch(e)) &#123;</div><div class="line">        cancelTouch();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">dispatchOnItemTouch</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> action = e.getAction();</div><div class="line">    <span class="keyword">if</span> (mActiveOnItemTouchListener != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (action == MotionEvent.ACTION_DOWN) &#123;</div><div class="line">            <span class="comment">// Stale state from a previous gesture, we're starting a new one. Clear it.</span></div><div class="line">            mActiveOnItemTouchListener = <span class="keyword">null</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">//此处即调用OnItemTouchListener的方法</span></div><div class="line">            mActiveOnItemTouchListener.onTouchEvent(<span class="keyword">this</span>, e);</div><div class="line">            <span class="keyword">if</span> (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) &#123;</div><div class="line">                <span class="comment">// Clean up for the next gesture.</span></div><div class="line">                mActiveOnItemTouchListener = <span class="keyword">null</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Listeners will have already received the ACTION_DOWN via dispatchOnItemTouchIntercept</span></div><div class="line">    <span class="comment">// as called from onInterceptTouchEvent; skip it.</span></div><div class="line">    <span class="keyword">if</span> (action != MotionEvent.ACTION_DOWN) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> listenerCount = mOnItemTouchListeners.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; listenerCount; i++) &#123;</div><div class="line">            <span class="keyword">final</span> OnItemTouchListener listener = mOnItemTouchListeners.get(i);</div><div class="line">            <span class="comment">//此处即调用OnItemTouchListener的方法</span></div><div class="line">            <span class="keyword">if</span> (listener.onInterceptTouchEvent(<span class="keyword">this</span>, e)) &#123;</div><div class="line">                mActiveOnItemTouchListener = listener;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onInterceptTouchEvent</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">if</span> (dispatchOnItemTouchIntercept(e)) &#123;</div><div class="line">        cancelTouch();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">dispatchOnItemTouchIntercept</span><span class="params">(MotionEvent e)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> action = e.getAction();</div><div class="line">    <span class="keyword">if</span> (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_DOWN) &#123;</div><div class="line">        mActiveOnItemTouchListener = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">int</span> listenerCount = mOnItemTouchListeners.size();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; listenerCount; i++) &#123;</div><div class="line">        <span class="keyword">final</span> OnItemTouchListener listener = mOnItemTouchListeners.get(i);</div><div class="line">        <span class="keyword">if</span> (listener.onInterceptTouchEvent(<span class="keyword">this</span>, e) &amp;&amp; action != MotionEvent.ACTION_CANCEL) &#123;</div><div class="line">            mActiveOnItemTouchListener = listener;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/RecyclerView绘制原理.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/RecyclerView绘制原理.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/UC浏览器首页滑动动画实现.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    UC浏览器首页滑动动画实现
+                
+            </div>
+        </a>
+    
+    
+        <a href="/基于OkHttp的封装库TigerOkHttp的使用.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">基于OkHttp的封装库TigerOkHttp的使用</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="RecyclerView绘制原理.html" data-title="RecyclerView绘制原理" data-url="http://ittiger.cn/RecyclerView绘制原理.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

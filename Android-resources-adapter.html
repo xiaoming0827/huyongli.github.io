@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Android资源应用与适配标准 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文内容来自Android官网对Android开发过程中资源使用、资源适配、资源选择原理的介绍和建议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android资源应用与适配标准">
+<meta property="og:url" content="http://ittiger.cn/Android-resources-adapter.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="本文内容来自Android官网对Android开发过程中资源使用、资源适配、资源选择原理的介绍和建议。">
+<meta property="og:image" content="http://ittiger.cn/img/android-resource-adapter/resource_type.png">
+<meta property="og:image" content="http://ittiger.cn/img/android-resource-adapter/resource_devices_diagram2.png">
+<meta property="og:image" content="http://ittiger.cn/img/android-resource-adapter/resource_default.png">
+<meta property="og:image" content="http://ittiger.cn/img/android-resource-adapter/resource_default2.png">
+<meta property="og:updated_time" content="2017-02-28T03:04:29.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android资源应用与适配标准">
+<meta name="twitter:description" content="本文内容来自Android官网对Android开发过程中资源使用、资源适配、资源选择原理的介绍和建议。">
+<meta name="twitter:image" content="http://ittiger.cn/img/android-resource-adapter/resource_type.png">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Android-resources-adapter" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Android资源应用与适配标准
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Android-resources-adapter.html">
+            <time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/资源适配/">资源适配</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>本文内容来自<code>Android</code>官网对<code>Android</code>开发过程中资源使用、资源适配、资源选择原理的介绍和建议。</p>
+<a id="more"></a>
+<h2 id="Android资源类型"><a href="#Android资源类型" class="headerlink" title="Android资源类型"></a>Android资源类型</h2><h3 id="Android项目结构"><a href="#Android项目结构" class="headerlink" title="Android项目结构"></a>Android项目结构</h3><p>一个<code>Android</code>项目有多重资源类型，我们一般都会将各种资源放入项目 <code>res/</code>目录的特定子目录下。例如，以下是一个简单项目的文件层次结构：<br><img src="/img/android-resource-adapter/resource_type.png" alt=""></p>
+<p>正如我们在此示例中所看到的那样，<code>res/</code>目录包含所有资源（在子目录下）：一个图像资源、两个布局资源、启动器图标的 <code>mipmap/</code> 目录以及一个字符串资源文件。资源目录名称非常重要，将在<code>表 1</code> 中进行介绍。</p>
+<blockquote>
+<p><strong>注</strong>：如需了解有关使用 <code>mipmap</code><br>文件夹的详细信息，请参阅<a href="https://developer.android.com/tools/projects/index.html#mipmap" target="_blank" rel="external">管理项目概览</a>。</p>
+</blockquote>
+<h3 id="Android支持的资源类型"><a href="#Android支持的资源类型" class="headerlink" title="Android支持的资源类型"></a>Android支持的资源类型</h3><p><strong>表 1.</strong> 项目 <code>res/</code> 目录内支持的资源目录。</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th style="text-align:left">资源类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>animator/</code></td>
+<td style="text-align:left">用于定义<a href="https://developer.android.com/guide/topics/graphics/prop-animation.html" target="_blank" rel="external">属性动画</a>的 XML文件。</td>
+</tr>
+<tr>
+<td><code>anim/</code></td>
+<td style="text-align:left">定义<a href="https://developer.android.com/guide/topics/graphics/view-animation.html#tween-animation" target="_blank" rel="external">渐变动画</a>的 XML 文件。（属性动画也可以保存在此目录中，但是为了区分这两种类型，属性动画首选 <code>animator/</code> 目录。）</td>
+</tr>
+<tr>
+<td><code>color/</code></td>
+<td style="text-align:left">用于定义颜色状态列表的 XML 文件。请参阅<a href="https://developer.android.com/guide/topics/resources/color-list-resource.html" target="_blank" rel="external">颜色状态列表资源</a></td>
+</tr>
+<tr>
+<td><code>drawable/</code></td>
+<td style="text-align:left">位图文件（<code>.png</code>、<code>.9.png</code>、<code>.jpg</code>、<code>.gif</code>）或编译为以下可绘制对象资源子类型的 XML 文件：<br>位图文件<br>九宫格（9-Patch）<br>状态列表<br>形状<br>动画可绘制对象<br>其他可绘制对象<br>请参阅<a href="https://developer.android.com/guide/topics/resources/drawable-resource.html" target="_blank" rel="external">可绘制对象资源</a></td>
+</tr>
+<tr>
+<td><code>mipmap/</code></td>
+<td style="text-align:left">适用于不同启动器图标密度的可绘制对象文件。如需了解有关使用 <code>mipmap/</code> 文件夹管理启动器图标的详细信息，请参阅<a href="https://developer.android.com/tools/projects/index.html#mipmap" target="_blank" rel="external">管理项目概览</a>。</td>
+</tr>
+<tr>
+<td><code>layout/</code></td>
+<td style="text-align:left">用于定义用户界面布局的 XML 文件。请参阅<a href="https://developer.android.com/guide/topics/resources/layout-resource.html" target="_blank" rel="external">布局资源</a></td>
+</tr>
+<tr>
+<td><code>menu/</code></td>
+<td style="text-align:left">用于定义应用菜单（如选项菜单、上下文菜单或子菜单）的 XML文件。请参阅<a href="https://developer.android.com/guide/topics/resources/menu-resource.html" target="_blank" rel="external">菜单资源</a>。</td>
+</tr>
+<tr>
+<td><code>raw/</code></td>
+<td style="text-align:left"><p>要以原始形式保存的任意文件。要使用原始<a href="https://developer.android.com/reference/java/io/InputStream.html" target="_blank" rel="external">InputStream</a>打开这些资源，请使用资源 ID（即 <code>R.raw.&lt;em&gt;filename&lt;/em&gt;</code>）调用 <a href="https://developer.android.com/reference/android/content/res/Resources.html#openRawResource(int" target="_blank" rel="external">Resources.openRawResource()</a>)<br>但是，如需访问原始文件名和文件层次结构，则可以考虑将某些资源保存在<code>assets/</code> 目录下（而不是 <code>res/raw/</code>）。<code>assets/</code> 中的文件没有资源 ID，因此您只能使用 <a href="https://developer.android.com/reference/android/content/res/AssetManager.html" target="_blank" rel="external">AssetManager</a> 读取这些文件。</p></td>
+</tr>
+<tr>
+<td><code>values/</code></td>
+<td style="text-align:left">包含字符串、整型数和颜色等简单值的 XML 文件。<br>其他 <code>res/</code> 子目录中的 XML资源文件是根据XML文件名定义单个资源，而 <code>values/</code> 目录中的文件可描述多个资源。对于此目录中的文件，<code>&lt;resources&gt;</code> 元素的每个子元素均定义一个资源。例如，<code>&lt;string&gt;</code> 元素创建<code>R.string</code> 资源，<code>&lt;color&gt;</code> 元素创建 <code>R.color</code>资源。<br>由于每个资源均用其自己的 XML元素定义，因此您可以根据自己的需要命名文件，并将不同的资源类型放在一个文件中。但是，为了清晰起见，您可能需要将独特的资源类型放在不同的文件中。<br>例如，对于可在此目录中创建的资源，下面给出了相应的文件名约定：<br>arrays.xml，用于资源数组（<a href="https://developer.android.com/guide/topics/resources/more-resources.html#TypedArray" target="_blank" rel="external">类型化数组</a>）。<br>colors.xml：<a href="https://developer.android.com/guide/topics/resources/more-resources.html#Color" target="_blank" rel="external">颜色值</a>。<br>dimens.xml：<a href="https://developer.android.com/guide/topics/resources/more-resources.html#Dimension" target="_blank" rel="external">尺寸值</a>。<br>strings.xml：<a href="https://developer.android.com/guide/topics/resources/string-resource.html" target="_blank" rel="external">字符串值</a>。<br>styles.xml：<a href="https://developer.android.com/guide/topics/resources/style-resource.html" target="_blank" rel="external">样式</a><br>请参阅<a href="https://developer.android.com/guide/topics/resources/string-resource.html" target="_blank" rel="external">字符串资源</a>、<a href="https://developer.android.com/guide/topics/resources/style-resource.html" target="_blank" rel="external">样式资源</a>和<a href="https://developer.android.com/guide/topics/resources/more-resources.html" target="_blank" rel="external">更多资源类型</a>。</td>
+</tr>
+<tr>
+<td><code>xml/</code></td>
+<td style="text-align:left">可以在运行时通过调用 <a href="https://developer.android.com/reference/android/content/res/Resources.html#getXml(int" target="_blank" rel="external">Resources.getXML()</a>) 读取的任意 XML 文件。各种 XML配置文件（如<a href="https://developer.android.com/guide/topics/search/searchable-config.html" target="_blank" rel="external">可搜索配置</a>）都必须保存在此处。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>注意</strong>：切勿将资源文件直接保存在<code>res/</code>目录内，这会导致出现编译错误。</p>
+</blockquote>
+<p>如需了解有关某些资源类型的详细信息，请参阅<a href="https://developer.android.com/guide/topics/resources/available-resources.html" target="_blank" rel="external">资源类型</a>文档。</p>
+<p>保存在<code>表 1</code>中定义的子目录下的资源是“默认”资源。即，这些资源定义应用的默认设计和内容。但是，采用<code>Android</code>技术的不同设备类型可能需要不同类型的资源。例如，如果设备的屏幕尺寸大于标准屏幕，则应提供不同的布局资源，以充分利用额外的屏幕空间。 或者，如果设备的语言设置不同，则应提供不同的字符串资源，以转换用户界面中的文本。 要为不同的设备配置提供这些不同资源，除了默认资源以外，您还需要提供备用资源。</p>
+<h2 id="为项目提供备用资源"><a href="#为项目提供备用资源" class="headerlink" title="为项目提供备用资源"></a>为项目提供备用资源</h2><p><img src="/img/android-resource-adapter/resource_devices_diagram2.png" alt=""><br><strong>图 1</strong>. 两种不同的设备，均使用不同的布局资源。</p>
+<p>几乎每个应用都应提供备用资源以支持特定的设备配置。 例如，对于不同的屏幕密度和语言，您应分别包括备用可绘制对象资源和备用字符串资源。 在运行时，<code>Android</code>会检测当前设备配置并为应用加载合适的资源。</p>
+<p>为一组资源指定特定于配置的备用资源：</p>
+<ol>
+<li><p>在 <code>res/</code>中创建一个以<code>&lt;resources_name&gt;-&lt;config_qualifier&gt;</code>形式命名的新目录。</p>
+<ul>
+<li><code>&lt;resources_name&gt;</code> 是相应默认资源的目录名称（如<code>表 1</code>中所定义）。</li>
+<li><code>&lt;qualifier&gt;</code> 是指定要使用这些资源的各个配置的名称（如<code>表 2</code>中所定义）。<br>您可以追加多个 <code>&lt;qualifier&gt;</code>。以短划线将其分隔。<blockquote>
+<p><strong>注意</strong>：追加多个限定符时，必须按照<code>表 2</code> 中列出的相同顺序放置它们。如果限定符的顺序错误，则该资源将被忽略。  </p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>将相应的备用资源保存在此新目录下。这些资源文件的名称必须与默认资源文件完全一样。</p>
+</li>
+</ol>
+<p>例如，以下是一些默认资源和备用资源：<br><img src="/img/android-resource-adapter/resource_default.png" alt=""></p>
+<p><code>hdpi</code>限定符表示该目录中的资源适用于屏幕密度较高的设备。其中每个可绘制对象目录中的图像已针对特定的屏幕密度调整大小，但是文件名完全相同。 这样一来，用于引用 <code>icon.png</code> 或<code>background.png</code> 图像的资源 ID 始终相同，但是 <code>Android</code> 会通过将设备配置信息与资源目录名称中的限定符进行比较，选择最符合当前设备的各个资源版本。</p>
+<p>Android 支持若干配置限定符，您可以通过使用短划线分隔每个限定符，向一个目录名称添加多个限定符。表 2 按优先顺序列出了有效的配置限定符；如果对资源目录使用多个限定符，则必须按照表中列出的顺序将它们添加到目录名称。</p>
+<h2 id="Android资源限定符"><a href="#Android资源限定符" class="headerlink" title="Android资源限定符"></a>Android资源限定符</h2><p><strong>表 2</strong>. 配置限定符名称。</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th style="text-align:center">限定符值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCC 和 MNC</td>
+<td style="text-align:center">示例：<br> <code>mcc310</code><br> <code>&lt;nobr&gt;mcc310-mnc004&lt;/nobr&gt;</code><br> <code>mcc208-mnc00</code><br>等等</td>
+<td style="text-align:left">移动国家代码 (MCC)，（可选）后跟设备 SIM卡中的移动网络代码 (MNC)。例如，<code>mcc310</code> 是指美国的任一运营商，<code>mcc310-mnc004</code> 是指美国的 Verizon公司，<code>mcc208-mnc00</code> 是指法国的 Orange公司。<br><br>如果设备使用无线电连接（GSM 手机），则 MCC 和 MNC 值来自 SIM卡。<br>也可以单独使用MCC（例如，将国家/地区特定的合法资源包括在应用中）。如果只需根据语言指定，则改用“语言和区域”<em></em>限定符（稍后进行介绍）。如果决定使用 MCC 和MNC 限定符，请谨慎执行此操作并测试限定符是否按预期工作。 <br><br>另请参阅配置字段 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#mcc" target="_blank" rel="external">mcc</a>和 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#mnc" target="_blank" rel="external">mnc</a>，这两个字段分别表示当前的移动国家代码和移动网络代码。</td>
+</tr>
+<tr>
+<td>语言和区域</td>
+<td style="text-align:center">示例：<br><code>en</code><br> <code>fr</code><br> <code>en-rUS</code><br> <code>fr-rFR</code><br> <code>fr-rCA</code><br>等等</td>
+<td style="text-align:left">语言通过由两个字母组成的 <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank" rel="external">ISO639-1</a> 语言代码定义，可以选择后跟两个字母组成的<a href="http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html" target="_blank" rel="external">ISO3166-1-alpha-2</a> 区域码（前带小写字母“<code>r</code>”）。<br><br>这些代码不区分大小写；<code>r</code>前缀用于区分区域码。<em></em>不能单独指定区域。<br><br>如果用户更改系统设置中的语言，它有可能在应用生命周期中发生改变。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。<br><br>有关针对其他语言本地化应用的完整指南，请参阅<a href="https://developer.android.com/guide/topics/resources/localization.html" target="_blank" rel="external">本地化</a>。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#locale" target="_blank" rel="external">locale</a> 配置字段，该字段表示当前的语言区域。</td>
+</tr>
+<tr>
+<td>布局方向</td>
+<td style="text-align:center"><code>ldrtl</code><br> <code>ldltr</code><br></td>
+<td style="text-align:left">应用的布局方向。<code>ldrtl</code> 是指“布局方向从右到左”。<code>ldltr</code>是指“布局方向从左到右”，这是默认的隐式值。<br><br>它适用于布局、图片或值等任何资源。<br><br>例如，若要针对阿拉伯语提供某种特定布局，并针对任何其他“从右到左”语言（如波斯语或希伯来语）提供某种通用布局，则可编码如下：<img src="/img/android-resource-adapter/resource_default2.png" alt=""><br><br><strong>注</strong>：要为应用启用从右到左的布局功能，必须将<a href="https://developer.android.com/guide/topics/manifest/application-element.html#supportsrtl" target="_blank" rel="external">supportsRtl</a> 设置为 <code>&quot;true&quot;</code>，并将 <a href="https://developer.android.com/guide/topics/manifest/uses-sdk-element.html#target" target="_blank" rel="external">targetSdkVersion</a> 设置为 17 或更高版本。<br><br><em>此项为 API 级别 17 中新增配置。</em></td>
+</tr>
+<tr>
+<td>smallestWidth</td>
+<td style="text-align:center"><code>sw&lt;N&gt;dp</code><br><br> 示例：<br><code>sw320dp</code><br><code>sw600dp</code><br><code>sw20dp</code><br>等等</td>
+<td style="text-align:left">屏幕的基本尺寸，由可用屏幕区域的最小尺寸指定。具体来说，设备的 <code>smallestWidth</code>是屏幕可用高度和宽度的最小尺寸（您也可以将其视为屏幕的“最小可能宽度”）。无论屏幕的当前方向如何，您均可使用此限定符确保应用UI 的可用宽度至少为<code>&lt;N&gt;dp</code>。<br><br>例如，如果布局要求屏幕区域的最小尺寸始终至少为<code>600dp</code>，则可使用此限定符创建布局资源 <code>res/layout-sw600dp/</code>。仅当可用屏幕的最小尺寸至少为<code>600dp</code> 时，系统才会使用这些资源，而不考虑<code>600dp</code>所代表的边是用户所认为的高度还是宽度。<code>smallestWidth</code>是设备的固定屏幕尺寸特性；<strong>设备的 <code>smallestWidth</code>不会随屏幕方向的变化而改变</strong>。<br><br>设备的 <code>smallestWidth</code> 将屏幕装饰元素和系统 UI 考虑在内。例如，如果设备的屏幕上有一些永久性 UI 元素占据沿<code>smallestWidth</code>轴的空间，则系统会声明 <code>smallestWidth</code> 小于实际屏幕尺寸，因为这些屏幕像素不适用于您的 UI。<br><br>因此，使用的值应该是<em>布局所需要</em>的实际最小尺寸（通常，无论屏幕的当前方向如何，此值都是布局支持的“最小宽度”）。<br><br>以下是一些可用于普通屏幕尺寸的值：<br>320，适用于屏幕配置如下的设备：<br>240x320 ldpi（QVGA 手机）<br>320x480 mdpi（手机）<br>480x800 hdpi（高密度手机）<br>480，适用于 480x800 mdpi 之类的屏幕（平板电脑/手机）。<br>600，适用于 600x1024 mdpi 之类的屏幕（7 英寸平板电脑）。<br>720，适用于 720x1280 mdpi 之类的屏幕（10 英寸平板电脑）。<br><br>应用为多个资源目录提供不同的 smallestWidth 限定符值时，系统会使用最接近（但未超出）设备smallestWidth 的值。 <br><br><em>此项为 API 级别 13 中新增配置。</em> <br> <br>另请参阅 <a href="https://developer.android.com/guide/topics/manifest/supports-screens-element.html#requiresSmallest" target="_blank" rel="external">android:requiresSmallestWidthDp</a> 属性和 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#smallestScreenWidthDp" target="_blank" rel="external">smallestScreenWidthDp</a> 配置字段，前者声明与应用兼容的最小 smallestWidth；后者存放设备的 smallestWidth 值。<br><br>如需了解有关设计不同屏幕和使用此限定符的详细信息，请参阅<a href="https://developer.android.com/guide/practices/screens_support.html" target="_blank" rel="external">支持多种屏幕</a>开发者指南。</td>
+</tr>
+<tr>
+<td>可用宽度</td>
+<td style="text-align:center"><code>w&lt;N&gt;dp</code><br><br>示例：<br><code>w720dp</code><br><code>w1024dp</code><br> 等等</td>
+<td style="text-align:left">指定资源应该使用的最小可用屏幕宽度，以 <code>dp</code>为单位，由 <code>&amp;lt;N&amp;gt;</code> 值定义。在横向和纵向之间切换时，为了匹配当前实际宽度，此配置值也会随之发生变化。<br>br/&gt;应用为多个资源目录提供不同的此配置值时，系统会使用最接近（但未超出）设备当前屏幕宽度的值。此处的值考虑到了屏幕装饰元素，因此如果设备显示屏的左边缘或右边缘上有一些永久性 UI元素，考虑到这些 UI元素，它会使用小于实际屏幕尺寸的宽度值，这样会减少应用的可用空间。<br><br><em>此项为 API 级别 13 中新增配置。</em><br> <br>另请参阅<a href="https://developer.android.com/reference/android/content/res/Configuration.html#screenWidthDp" target="_blank" rel="external">screenWidthDp</a> 配置字段，该字段存放当前屏幕宽度。<br><br>如需了解有关设计不同屏幕和使用此限定符的详细信息，请参阅<a href="https://developer.android.com/guide/practices/screens_support.html" target="_blank" rel="external">支持多种屏幕</a>开发者指南。</td>
+</tr>
+<tr>
+<td>可用高度</td>
+<td style="text-align:center"><code>h&lt;N&gt;dp</code><br><br> 示例：<br><code>h720dp</code><br> <code>h1024dp</code><br>等等</td>
+<td style="text-align:left">指定资源应该使用的最小可用屏幕高度，以“dp”为单位，由 <code>&lt;N&gt;</code> 值定义。在横向和纵向之间切换时，为了匹配当前实际高度，此配置值也会随之发生变化。<br><br>应用为多个资源目录提供不同的此配置值时，系统会使用最接近（但未超出）设备当前屏幕高度的值。此处的值考虑到了屏幕装饰元素，因此如果设备显示屏的上边缘或下边缘有一些永久性 UI元素，考虑到这些 UI 元素，同时为减少应用的可用空间，它会使用小于实际屏幕尺寸的高度值。非固定的屏幕装饰元素（例如，全屏时可隐藏的手机状态栏）并不<em></em>在考虑范围内，标题栏或操作栏等窗口装饰也不在考虑范围内，因此应用必须准备好处理稍小于其所指定值的空间。<br><br><em>此项为 API 级别 13 中新增配置。</em><br><br>另请参阅<a href="https://developer.android.com/reference/android/content/res/Configuration.html#screenHeightDp" target="_blank" rel="external">screenHeightDp</a> 配置字段，该字段存放当前屏幕宽度。<br><br>如需了解有关设计不同屏幕和使用此限定符的详细信息，请参阅<a href="https://developer.android.com/guide/practices/screens_support.html" target="_blank" rel="external">支持多种屏幕</a>开发者指南。</td>
+</tr>
+<tr>
+<td>屏幕尺寸</td>
+<td style="text-align:center"><code>small</code><br><code>normal</code><br> <code>large</code><br> <code>xlarge</code></td>
+<td style="text-align:left"><code>small</code>：尺寸类似于低密度QVGA 屏幕的屏幕。小屏幕的最小布局尺寸约为320x426 dp 单位。例如，QVGA 低密度屏幕和WVGA高密度屏幕。<br><br><code>normal</code>：尺寸类似于中等密度HVGA 屏幕的屏幕。标准屏幕的最小布局尺寸约为320x470 dp 单位。例如，WQVGA低密度屏幕、HVGA 中等密度屏幕、WVGA高密度屏幕。<br><br><code>large</code>：尺寸类似于中等密度WVGA 屏幕的屏幕。大屏幕的最小布局尺寸约为 480x640 dp 单位。 例如，VGA 和 WVGA 中等密度屏幕。<br><br><code>xlarge</code>：明显大于传统中等密度HVGA 屏幕的屏幕。超大屏幕的最小布局尺寸约为720x960 dp 单位。在大多数情况下，屏幕超大的设备体积过大，不能放进口袋，最常见的是平板式设备。<em>API 级别 9 中的新增配置。</em><br><br><strong>注：使用尺寸限定符并不表示资源仅<em></em>适用于该尺寸的屏幕。如果没有为备用资源提供最符合当前设备配置的限定符，则系统可能使用其中最匹配的资源。</strong><br><br><strong>注意：如果所有资源均使用大于<em></em>当前屏幕的尺寸限定符，则系统<strong>不</strong>会使用这些资源，并且应用在运行时将会崩溃（例如，如果所有布局资源均用 <code>xlarge</code> 限定符标记，但设备是标准尺寸的屏幕）。</strong><br><br><em>此项为 API 级别 4 中新增配置。</em><br><br>如需了解详细信息，请参阅<a href="https://developer.android.com/guide/practices/screens_support.html" target="_blank" rel="external">支持多种屏幕</a>。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#screenLayout" target="_blank" rel="external">screenLayout</a> 配置字段，该字段表示屏幕是小尺寸、标准尺寸还是大尺寸。</td>
+</tr>
+<tr>
+<td>屏幕纵横比</td>
+<td style="text-align:center"><code>long</code><br><code>notlong</code></td>
+<td style="text-align:left"><code>long</code>：宽屏，如 WQVGA、WVGA、FWVGA<br><code>notlong</code>：非宽屏，如 QVGA、HVGA 和 VGA<br><br><em>此项为 API 级别 4 中新增配置。</em><br><br>它完全基于屏幕的纵横比（宽屏较宽），而与屏幕方向无关。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#screenLayout" target="_blank" rel="external">screenLayout</a> 配置字段，该字段指示屏幕是否为宽屏。</td>
+</tr>
+<tr>
+<td>圆形屏幕</td>
+<td style="text-align:center"><code>round</code><br><code>notround</code></td>
+<td style="text-align:left"><code>round</code>：圆形屏幕，例如圆形可穿戴式设备<br><code>notround</code>：方形屏幕，例如手机或平板电脑<br><br><em>此项为 API 级别 23 中新增配置。</em><br> <br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#isScreenRound(" target="_blank" rel="external">isScreenRound()</a>) 配置方法，其指示屏幕是否为宽屏。</td>
+</tr>
+<tr>
+<td>屏幕方向</td>
+<td style="text-align:center"><code>port</code><br><code>land</code></td>
+<td style="text-align:left"><code>port</code>：设备处于纵向（垂直）<br><code>land</code>：设备处于横向（水平）<br><br>如果用户旋转屏幕，它有可能在应用生命周期中发生改变。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#orientation" target="_blank" rel="external">orientation</a> 配置字段，该字段指示当前的设备方向。</td>
+</tr>
+<tr>
+<td>UI 模式</td>
+<td style="text-align:center"><code>car</code><br> <code>desk</code><br> <code>television&lt;br/&gt;</code>appliance<code>`watch</code></td>
+<td style="text-align:left"><code>car</code>：设备正在车载手机座上显示<br><code>desk</code>：设备正在桌面手机座上显示<br><code>television</code>：设备正在电视上显示，为用户提供“十英尺”体验，其UI 位于远离用户的大屏幕上，主要面向方向键或其他非指针式交互<br><code>appliance</code>：设备用作不带显示屏的装置<br><code>watch</code>：设备配有显示屏，戴在手腕上<br> <br><em>此项为 API 级别 8 中新增配置，API 13 中新增电视配置，API 20 中新增手表配置。</em><br> <br>如需了解应用在设备插入手机座或从中移除时的响应方式，请阅读<a href="https://developer.android.com/training/monitoring-device-state/docking-monitoring.html" target="_blank" rel="external">确定并监控插接状态和类型</a>。<br><br>如果用户将设备放入手机座中，它有可能在应用生命周期中发生改变。可以使用 <a href="https://developer.android.com/reference/android/app/UiModeManager.html&quot;&gt;UiModeManager" target="_blank" rel="external"></a> 启用或禁用其中某些模式。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。</td>
+</tr>
+<tr>
+<td>夜间模式</td>
+<td style="text-align:center"><code>night</code><br> <code>notnight</code></td>
+<td style="text-align:left"><code>night</code>：夜间<br><code>notnight</code>：白天<br> <br><em>此项为 API 级别 8 中新增配置。</em><br><br>如果夜间模式停留在自动模式（默认），它有可能在应用生命周期中发生改变。在这种情况下，该模式会根据当天的时间进行调整。可以使用<a href="https://developer.android.com/reference/android/app/UiModeManager.html" target="_blank" rel="external">UiModeManager</a> 启用或禁用此模式。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。</td>
+</tr>
+<tr>
+<td>屏幕像素密度 (dpi)</td>
+<td style="text-align:center"><code>ldpi</code><br><code>mdpi</code><br><code>hdpi</code><br><code>xhdpi</code><br><code>xxhdpi</code><br><code>xxxhdpi</code><br> <code>nodpi</code><br> <code>tvdpi</code><br><code>anydpi</code></td>
+<td style="text-align:left"><code>ldpi</code>：低密度屏幕；约为120dpi。<br><code>mdpi</code>：中等密度（传统 HVGA）屏幕；约为160dpi。<br><code>hdpi</code>：高密度屏幕；约为 240dpi。<br><code>xhdpi</code>：超高密度屏幕；约为 320dpi。<em>此项为 API级别 8 中新增配置</em><br><code>xxhdpi</code>：超超高密度屏幕；约为 480dpi。<em>此项为 API级别 16 中新增配置</em><br><code>xxxhdpi</code>：超超超高密度屏幕使用（仅限启动器图标，请参阅“支持多种屏幕”中的<a href="https://developer.android.com/guide/practices/screens_support.html#xxxhdpi-note" target="_blank" rel="external">注释</a>）；约为640dpi。<em>此项为 API级别 18 中新增配置</em><br><code>nodpi</code>：它可用于您不希望缩放以匹配设备密度的位图资源。<br><code>tvdpi</code>：密度介于 mdpi 和 hdpi 之间的屏幕；约为 213dpi。它并不是“主要”密度组，主要用于电视，而大多数应用都不需要它。对于大多数应用而言，提供 mdpi 和hdpi资源便已足够，系统将根据需要对其进行缩放。<em>此项为 API 级别 13 中新增配置</em><br><code>anydpi</code>：此限定符适合所有屏幕密度，其优先级高于其他限定符。这对于<a href="https://developer.android.com/training/material/drawables.html#VectorDrawables" target="_blank" rel="external">矢量可绘制对象</a>很有用。<em>此项为 API 级别 21 中新增配置</em> <br><br>六个主要密度之间的缩放比为 3:4:6:8:12:16（忽略tvdpi 密度）。因此，9x9 (ldpi) 位图相当于 12x12 (mdpi)、18x18 (hdpi)、24x24 (xhdpi) 位图，依此类推。 <br><br>如果您认为图像资源在电视或其他某些设备上呈现的效果不够好，而想尝试使用 tvdpi 资源，则缩放比例为1.33*mdpi。例如，mdpi屏幕的 100px x 100px 图像应该相当于 tvdpi 的133px x 133px。 <br> <br><strong>注：使用密度限定符并不表示资源仅适用于该密度的屏幕。如果没有为备用资源提供最符合当前设备配置的限定符，则系统可能使用其中<a href="">#BestMatch”&gt;最匹配</a>的资源。</strong><br><br>如需了解有关如何处理不同屏幕密度以及 Android 如何缩放位图以适应当前密度的详细信息，请参阅<a href="https://developer.android.com/guide/practices/screens_support.html" target="_blank" rel="external">支持多种屏幕</a>。</td>
+</tr>
+<tr>
+<td>触摸屏类型</td>
+<td style="text-align:center"><code>notouch</code><br><code>finger</code></td>
+<td style="text-align:left"><code>notouch</code>：设备没有触摸屏。<br><code>finger</code>：设备有一个专供用户通过手指直接与其交互的触摸屏。<br> <br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#touchscreen" target="_blank" rel="external">touchscreen</a> 配置字段，该字段指示设备上的触摸屏类型。</td>
+</tr>
+<tr>
+<td>键盘可用性</td>
+<td style="text-align:center"><code>keysexposed</code><br> <code>keyshidden</code><br> <code>keyssoft</code></td>
+<td style="text-align:left"><code>keysexposed</code>：设备具有可用的键盘。如果设备启用了软键盘（不无可能），那么即使硬键盘没有展示给用户，哪怕设备没有硬键盘，也可以使用此限定符。如果没有提供或已经禁用软键盘，则只有在显示硬键盘时才会使用此限定符。<br><code>keyshidden</code>：设备具有可用的硬键盘，但它处于隐藏状态，且设备没有启用软键盘。<br><code>keyssoft</code>：设备已经启用软键盘（无论是否可见）。<br><br>如果提供了 <code>keysexposed</code> 资源，但未提供 <code>keyssoft</code>资源，那么只要系统已经启用软键盘，就会使用<code>keysexposed</code> 资源，而不考虑键盘是否可见。<br><br>如果用户打开硬键盘，它有可能在应用生命周期中发生改变。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。<br><br>另请参阅配置字段 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#hardKeyboardHidden" target="_blank" rel="external">hardKeyboardHidden</a>和<a href="https://developer.android.com/reference/android/content/res/Configuration.html#keyboardHidden" target="_blank" rel="external">keyboardHidden</a>，这两个字段分别指示硬键盘的可见性和任何一种键盘（包括软键盘）的可见性。</td>
+</tr>
+<tr>
+<td>主要文本输入法</td>
+<td style="text-align:center"><code>nokeys</code><br><code>qwerty</code><br> <code>12key</code></td>
+<td style="text-align:left"><code>nokeys</code>：设备没有用于文本输入的硬按键。<br><code>qwerty</code>：设备具有标准硬键盘（无论是否对用户可见）。<br><code>12key</code>：设备具有 12 键硬键盘（无论是否对用户可见）。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#keyboard" target="_blank" rel="external">keyboard</a> 配置字段，该字段指示可用的主要文本输入法。</td>
+</tr>
+<tr>
+<td>导航键可用性</td>
+<td style="text-align:center"><code>navexposed</code><br> <code>navhidden</code></td>
+<td style="text-align:left"><code>navexposed</code>：导航键可供用户使用。<br><code>navhidden</code>：导航键不可用（例如，位于密封盖子后面）。<br> <br>如果用户显示导航键，它有可能在应用生命周期中发生改变。如需了解这会在运行期间给应用带来哪些影响，请参阅<a href="https://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank" rel="external">处理运行时变更</a>。<br><br>另请参阅<a href="https://developer.android.com/reference/android/content/res/Configuration.html#navigationHidden" target="_blank" rel="external">navigationHidden</a> 配置字段，该字段指示导航键是否处于隐藏状态。</td>
+</tr>
+<tr>
+<td>主要非触摸导航方法</td>
+<td style="text-align:center"><code>nonav</code><br><code>dpad</code><br> <code>trackball</code><br> <code>wheel</code></td>
+<td style="text-align:left"><code>nonav</code>：除了使用触摸屏以外，设备没有其他导航设施。<br><code>dpad</code>：设备具有用于导航的方向键。<br><code>trackball</code>：设备具有用于导航的轨迹球。<br><code>wheel</code>：设备具有用于导航的方向盘（不常见）。<br><br>另请参阅 <a href="https://developer.android.com/reference/android/content/res/Configuration.html#navigation" target="_blank" rel="external">navigation</a>配置字段，该字段指示可用的导航方法类型。</td>
+</tr>
+<tr>
+<td>平台版本（API 级别）</td>
+<td style="text-align:center">示例：<br><code>v3</code><br><code>v4</code><br><code>v7</code><br>等等</td>
+<td style="text-align:left">设备支持的 API 级别。例如，<code>v1</code> 对应于 API 级别1（带有 Android 1.0 或更高版本系统的设备），<code>v4</code> 对应于 API 级别 4（带有 Android1.6 或更高版本系统的设备）。如需了解有关这些值的详细信息，请参阅<a href="https://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels" target="_blank" rel="external">Android API 级别</a>文档。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>注</strong>：有些配置限定符是从 <code>Android 1.0</code> 才开始添加，因此并非所有版本的<code>Android</code>系统都支持所有限定符。使用新限定符会隐式添加平台版本限定符，因此较旧版本系统的设备必然会忽略它。 例如，使用 <code>w600dp</code> 限定符会自动包括 v13 限定符，因为可用宽度限定符是 API 级别 13 中的新增配置。为了避免出现任何问题，请始终包含一组默认资源（一组“不带限定符”的资源）。 如需了解详细信息，请参阅利用资源提供最佳设备兼容性部分</p>
+</blockquote>
+<h2 id="限定符命名规则"><a href="#限定符命名规则" class="headerlink" title="限定符命名规则"></a>限定符命名规则</h2><p>以下是一些关于使用配置限定符名称的规则：</p>
+<ul>
+<li>您可以为单组资源指定多个限定符，并使用短划线分隔。例如，<code>drawable-en-rUS-land</code> 适用于横排美国英语设备。</li>
+<li>这些限定符必须遵循表 2 中列出的顺序。例如：<ul>
+<li>错误：<code>drawable-hdpi-port/</code></li>
+<li>正确：<code>drawable-port-hdpi/</code></li>
+</ul>
+</li>
+<li>不能嵌套备用资源目录。例如，您不能拥有 <code>res/drawable/drawable-en/</code>。</li>
+<li>值不区分大小写。在处理之前，资源编译器会将目录名称转换为小写，以避免不区分大小写的文件系统出现问题。 名称中使用的任何大写字母只是为了便于认读。</li>
+<li>对于每种限定符类型，仅支持一个值。例如，若要对西班牙语和法语使用相同的可绘制对象文件，则您肯定不能拥有名为<code>drawable-rES-rFR/</code> 的目录，而是需要两个包含相应文件的资源目录，如 <code>drawable-rES/</code> 和 <code>drawable-rFR/</code>。然而，实际上您无需将相同的文件都复制到这两个位置。相反，您可以创建指向资源的别名。 请参阅下面的<strong><code>创建别名资源</code></strong>。</li>
+</ul>
+<p>将备用资源保存到以这些限定符命名的目录中之后，Android 会根据当前设备配置在应用中自动应用这些资源。 每次请求资源时，Android 都会检查备用资源目录是否包含所请求的资源文件，然后找到最匹配资源（下文进行介绍）。 如果没有与特定设备配置匹配的备用资源，则 Android 会使用相应的默认资源（一组用于不含配置限定符的特定资源类型的资源）</p>
+<h2 id="创建别名资源"><a href="#创建别名资源" class="headerlink" title="创建别名资源"></a>创建别名资源</h2><p>如果您想将某一资源用于多种设备配置（但是不想作为默认资源提供），则无需将同一资源放入多个备用资源目录中。 相反，您可以（在某些情况下）创建备用资源，充当保存在默认资源目录下的资源的别名。</p>
+<blockquote>
+<p><strong> 注</strong>：并非所有资源都会提供相应机制让您创建指向其他资源的别名。 特别是，xml/ 目录中的动画资源、菜单资源、原始资源以及其他未指定资源均不提供此功能。</p>
+</blockquote>
+<p>例如，假设您有一个应用图标 <code>icon.png</code>，并且需要不同语言区域的独特版本。 但是，加拿大英语和加拿大法语这两种语言区域需要使用同一版本。 您可能会认为需要将相同的图像复制到加拿大英语和加拿大法语对应的资源目录中，但事实并非如此。 相反，您可以将用于二者的图像另存为<code>icon_ca.png</code>（除 <code>icon.png</code> 以外的任何名称），并将其放入默认<code>res/drawable/</code>目录中。然后，在<code>res/drawable-en-rCA/</code> 和 <code>res/drawable-fr-rCA/</code> 中创建<code>icon.xml</code>文件，使用 <code>&lt;bitmap&gt;</code> 元素引用 <code>icon_ca.png</code>资源。这样，您只需存储 PNG 文件的一个版本和两个指向该版本的小型 XML 文件。（XML 文件示例如下。）</p>
+<h3 id="可绘制对象"><a href="#可绘制对象" class="headerlink" title="可绘制对象"></a>可绘制对象</h3><p>要创建指向现有可绘制对象的别名，请使用<code>&lt;bitmap&gt;</code>元素。例如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">bitmap</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:src</span>=<span class="string">"@drawable/icon_ca"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>如果将此文件另存为<code>icon.xml</code>（例如，在备用资源目录中，另存为<code>res/drawable-en-rCA/</code>），则会编译到可作为 <code>R.drawable.icon</code> 引用的资源中，但实际上它是 <code>R.drawable.icon_ca</code>资源（保存在<code>res/drawable/</code>中）的别名。</p>
+<h3 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h3><p>要创建指向现有布局的别名，请使用包装在<code>&lt;merge&gt;</code>中的<code>&lt;include&gt;</code>元素。例如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">merge</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/main_ltr"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">merge</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>如果将此文件另存为 <code>main.xml</code>，则会编译到可作为 <code>R.layout.main</code> 引用的资源中，但实际上它是 <code>R.layout.main_ltr</code> 资源的别名。</p>
+<h3 id="字符串和其他简单值"><a href="#字符串和其他简单值" class="headerlink" title="字符串和其他简单值"></a>字符串和其他简单值</h3><p>要创建指向现有字符串的别名，只需将所需字符串的资源 ID 用作新字符串的值即可。例如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">"hello"</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">"hi"</span>&gt;</span>@string/hello<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p><code>R.string.hi</code>资源现在是 <code>R.string.hello</code>的别名。</p>
+<p>其他简单值的原理相同。 例如，颜色：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">color</span> <span class="attr">name</span>=<span class="string">"red"</span>&gt;</span>#f00<span class="tag">&lt;/<span class="name">color</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">color</span> <span class="attr">name</span>=<span class="string">"highlight"</span>&gt;</span>@color/red<span class="tag">&lt;/<span class="name">color</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="利用资源提供最佳设备兼容性"><a href="#利用资源提供最佳设备兼容性" class="headerlink" title="利用资源提供最佳设备兼容性"></a>利用资源提供最佳设备兼容性</h2><p>要使应用支持多种设备配置，则务必为应用使用的每种资源类型提供默认资源，这一点非常重要。</p>
+<p>例如，如果应用支持多种语言，请始终包含不带语言和区域限定符的 values/ 目录（用于保存字符串）。相反，如果您将所有字符串放入带有语言和区域限定符的目录中，则在语言设置不支持您的字符串的设备上运行应用时，应用将会崩溃。 但是，只要提供默认 values/ 资源，应用就会正常运行（即使用户不理解该语言，这也总比崩溃要好）。</p>
+<p>同样，如果您根据屏幕方向提供不同的布局资源，则应选择一个方向作为默认方向。 例如，不要在 layout-land/ 和 layout-port/ 中分别提供横向和纵向的布局资源，而是保留其中之一作为默认设置，例如：layout/ 用于横向，layout-port/ 用于纵向。</p>
+<p>提供默认资源至关重要，这不仅仅因为应用可能在超出预期的配置上运行，也因为新版 Android 有时会添加旧版本不支持的配置限定符。若要使用新的资源限定符，又希望维持对旧版 Android 的代码兼容性，则当旧版 Android 运行应用时，如果不提供默认资源，应用将会崩溃，这是因为它无法使用以新限定符命名的资源。例如，如果将 <code>minSdkVersion</code> 设置为 4，并使用<code>夜间模式</code>（night 或 notnight，API 级别 8 中新增配置）限定所有可绘制对象资源，则 API 级别 4 设备无法访问可绘制对象资源，而且会崩溃。在这种情况下，您可能希望 notnight 成为默认资源，为此，您应排除该限定符，使可绘制对象资源位于<code>drawable/</code> 或 <code>drawable-night/</code> 中。</p>
+<p>因此，为了提供最佳设备兼容性，请始终为应用正确运行所必需的资源提供默认资源。 然后，使用配置限定符为特定的设备配置创建备用资源。</p>
+<p>这条规则有一个例外：如果应用的 <code>minSdkVersion</code> 为 4 或更高版本，则在提供带屏幕密度限定符的备用可绘制对象资源时，不需要默认可绘制对象资源。 即使没有默认可绘制对象资源，Android 也可以从备用屏幕密度中找到最佳匹配项并根据需要缩放位图。 但是，为了在所有类型的设备上提供最佳体验，您应该为所有三种类型的密度提供备用可绘制对象。</p>
+<h2 id="Android-如何找到最匹配资源"><a href="#Android-如何找到最匹配资源" class="headerlink" title="Android 如何找到最匹配资源"></a>Android 如何找到最匹配资源</h2><p>当您请求要为其提供备用资源的资源时，Android 会根据当前的设备配置选择要在运行时使用的备用资源。为演示 Android 如何选择备用资源，假设以下可绘制对象目录分别包含相同图像的不同版本：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">drawable/</div><div class="line">drawable-en/</div><div class="line">drawable-fr-rCA/</div><div class="line">drawable-en-port/</div><div class="line">drawable-en-notouch-<span class="number">12</span>key/</div><div class="line">drawable-port-ldpi/</div><div class="line">drawable-port-notouch-<span class="number">12</span>key/</div></pre></td></tr></table></figure></p>
+<p>同时，假设设备配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">语言区域 = en-GB </div><div class="line">屏幕方向 = port </div><div class="line">屏幕像素密度 = hdpi </div><div class="line">触摸屏类型 = notouch </div><div class="line">主要文本输入法 = <span class="number">12</span>key</div></pre></td></tr></table></figure></p>
+<p>通过将设备配置与可用的备用资源进行比较，Android 从 <code>drawable-en-port</code> 中选择可绘制对象。</p>
+<p>系统使用以下逻辑决定要使用的资源：</p>
+<ol>
+<li><p>淘汰与设备配置冲突的资源文件。<br> <code>drawable-fr-rCA/</code> 目录与<code>en-GB</code>语言区域冲突，因而被淘汰。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">drawable/</div><div class="line">drawable-en/</div><div class="line">drawable-fr-rCA/ ---&gt;<span class="comment">//被淘汰</span></div><div class="line">drawable-en-port/</div><div class="line">drawable-en-notouch-<span class="number">12</span>key/</div><div class="line">drawable-port-ldpi/</div><div class="line">drawable-port-notouch-<span class="number">12</span>key/</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>例外</strong>：屏幕像素密度是唯一一个未因冲突而被淘汰的限定符。 尽管设备的屏幕密度为 hdpi，但是 drawable-port-ldpi/ 未被淘汰，因为此时每个屏幕密度均视为匹配。如需了解详细信息，请参阅支持多种屏幕文档。</p>
+</blockquote>
+</li>
+<li>选择列表（<code>表 2</code>）中（下一个）优先级最高的限定符。（先从 <code>MCC</code>开始，然后下移。）</li>
+<li>是否有资源目录包括此限定符？<ul>
+<li>若无，请返回到第 2 步，看看下一个限定符。（在该示例中，除非达到语言限定符，否则答案始终为“否”。）</li>
+<li>若有，请继续执行第 4 步。</li>
+</ul>
+</li>
+<li><p>淘汰不含此限定符的资源目录。在该示例中，系统会淘汰所有不含语言限定符的目录。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	drawable/  ---&gt;<span class="comment">//被淘汰</span></div><div class="line">drawable-en/</div><div class="line">drawable-en-port/</div><div class="line">drawable-en-notouch-<span class="number">12</span>key/</div><div class="line">drawable-port-ldpi/        ---&gt;<span class="comment">//被淘汰</span></div><div class="line">drawable-port-notouch-<span class="number">12</span>key/   ---&gt;<span class="comment">//被淘汰</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>例外</strong>：如果涉及的限定符是屏幕像素密度，则 Android 会选择最接近设备屏幕密度的选项。通常，Android 倾向于缩小大型原始图像，而不是放大小型原始图像。请参阅支持多种屏幕。</p>
+</blockquote>
+</li>
+<li><p>返回并重复第 2 步、第 3 步和第 4 步，直到只剩下一个目录为止。在此示例中，屏幕方向是下一个判断是否匹配的限定符。因此，未指定屏幕方向的资源被淘汰：</p>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	drawable-en/  ---&gt;<span class="comment">//被淘汰</span></div><div class="line">drawable-en-port/</div><div class="line">drawable-en-notouch-<span class="number">12</span>key/  ---&gt;<span class="comment">//被淘汰</span></div></pre></td></tr></table></figure>
+</code></pre><p> 剩下的目录是<code>drawable-en-port</code>。</p>
+</li>
+</ol>
+<p>尽管对所请求的每个资源均执行此程序，但是系统仍会对某些方面做进一步优化。 例如，系统一旦知道设备配置，即会淘汰可能永远无法匹配的备用资源。 比如说，如果配置语言是英语（“en”），则系统绝不会将语言限定符设置为非英语的任何资源目录包含在选中的资源池中（不过，仍会将不带语言限定符的资源目录包含在该池中）。</p>
+<p>根据屏幕尺寸限定符选择资源时，如果没有更好的匹配资源，则系统将使用专为小于当前屏幕的屏幕而设计的资源（例如，如有必要，大尺寸屏幕将使用标准尺寸的屏幕资源）。 但是，如果唯一可用的资源大于当前屏幕，则系统不会使用这些资源，并且如果没有其他资源与设备配置匹配，应用将会崩溃（例如，如果所有布局资源均用 xlarge 限定符标记，但设备是标准尺寸的屏幕）。</p>
+<blockquote>
+<p><strong>注</strong>：限定符的优先顺序（表 2 中）比与设备完全匹配的限定符数量更加重要。例如，在上面的第 4 步中，列表剩下的最后选项包括三个与设备完全匹配的限定符（方向、触摸屏类型和输入法），而 <code>drawable-en</code> 只有一个匹配参数（语言）。但是，语言的优先顺序高于其他两个限定符，因此<code>drawable-port-notouch-12key</code> 被淘汰。</p>
+</blockquote>
+<p>write by laohu<br>2016年11月19日</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/Android-resources-adapter.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/Android-resources-adapter.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/Imitate-WeiXin-contact-view.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    自定义实现微信通讯录效果View
+                
+            </div>
+        </a>
+    
+    
+        <a href="/Nine-Patch-Affect-Padding-Principle.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Android基础之9-Patch(9.PNG)与padding</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="Android-resources-adapter.html" data-title="Android资源应用与适配标准" data-url="http://ittiger.cn/Android-resources-adapter.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

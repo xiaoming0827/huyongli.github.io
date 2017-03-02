@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Lucene近实时搜索应用总结 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="最近因工作需要，用到了Lucene，在需求中，需要对生成的索引文件不断的更新、新增、删除等操作，同时还要实时的看到索引改动后的数据，在使用过程中碰到了Lucene里几个比较常见的问题，特来总结记录下。
+我使用的是Lucene4.3，本来是想使用最高的版本Lucene4.9的(不知道现在又有么有新的版本出现)，但是因为公司项目的JDK都是JDK6的，而Lucene4.9的支持的最低JDK版本是7+的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lucene近实时搜索应用总结">
+<meta property="og:url" content="http://ittiger.cn/Lucene近实时搜索应用总结.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="最近因工作需要，用到了Lucene，在需求中，需要对生成的索引文件不断的更新、新增、删除等操作，同时还要实时的看到索引改动后的数据，在使用过程中碰到了Lucene里几个比较常见的问题，特来总结记录下。
+我使用的是Lucene4.3，本来是想使用最高的版本Lucene4.9的(不知道现在又有么有新的版本出现)，但是因为公司项目的JDK都是JDK6的，而Lucene4.9的支持的最低JDK版本是7+的">
+<meta property="og:updated_time" content="2016-07-28T05:29:47.488Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lucene近实时搜索应用总结">
+<meta name="twitter:description" content="最近因工作需要，用到了Lucene，在需求中，需要对生成的索引文件不断的更新、新增、删除等操作，同时还要实时的看到索引改动后的数据，在使用过程中碰到了Lucene里几个比较常见的问题，特来总结记录下。
+我使用的是Lucene4.3，本来是想使用最高的版本Lucene4.9的(不知道现在又有么有新的版本出现)，但是因为公司项目的JDK都是JDK6的，而Lucene4.9的支持的最低JDK版本是7+的">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Lucene近实时搜索应用总结" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Lucene近实时搜索应用总结
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Lucene近实时搜索应用总结.html">
+            <time datetime="2014-12-11T11:12:55.000Z" itemprop="datePublished">2014-12-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Java/">Java</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Java/">Java</a>, <a class="tag-link" href="/tags/Lucene/">Lucene</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>最近因工作需要，用到了Lucene，在需求中，需要对生成的索引文件不断的更新、新增、删除等操作，同时还要实时的看到索引改动后的数据，在使用过程中碰到了Lucene里几个比较常见的问题，特来总结记录下。</p>
+<p>我使用的是Lucene4.3，本来是想使用最高的版本Lucene4.9的(不知道现在又有么有新的版本出现)，但是因为公司项目的JDK都是JDK6的，而Lucene4.9的支持的最低JDK版本是7+的，所以最后选择了这个版本。第一次碰这个东东，也是在网上搜罗各种资料，当然官网是少不了的，还有一个网址，这个里面的版本更全面，包含了Lucene所有的版本，有需要的可以去下载自己想要的版本。</p>
+<p>OK，进入正题。</p>
+<ol>
+<li><p>在读取索引文件内容时，索引文件的打开操作 <code>new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File(indexPath))))</code> 是个非常耗时耗资源的操作，所以在搜索索引数据时把<code>IndexSearcher</code>对象给缓存起来可以提高搜索性能，这个地方可以将索引目录对应的<code>IndexSearcher</code>对象做成一个单例模式进行获取。</p>
+</li>
+<li><p>在问题1的操作基础上，我对索引进行了更新操作，紧接着我就发现了一个问题，索引更新后我查询出来的结果和我更新后的结果对不上号。再网上查了半天没找到原因，后来在一个群里请教之后，才知道更新完索引之后，索引文件需要重新打开，否则搜索得到的还是原来索引的数据，Lucene里面的这个原理非常重要。</p>
+</li>
+<li><p>因为当时对<code>Lucene</code>了解的不是很多，所以为了每次更新后能搜索到正确的数据，我的做法是每次更新完索引就将我之前缓存的<code>IndexSearcher</code>对象和<code>Reader</code>对象给移除掉，下次搜索时重新打开索引，这样来保证搜索结果的正确性。</p>
+</li>
+</ol>
+<a id="more"></a>
+<p>索引的更新代码大致如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取索引的写对象</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IndexWriter <span class="title">getIndexWriter</span><span class="params">(String indexPath)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">      Directory dir = FSDirectory.open(<span class="keyword">new</span> File(indexPath));</div><div class="line">      <span class="keyword">if</span>(IndexWriter.isLocked(dir)) &#123;</div><div class="line">          IndexWriter.unlock(dir);</div><div class="line">      &#125;</div><div class="line">      IndexWriterConfig iwriterConfig = <span class="keyword">new</span> IndexWriterConfig(Version.LUCENE_43, <span class="keyword">new</span> ComplexAnalyzer());</div><div class="line">      IndexWriter indexWriter=<span class="keyword">new</span> IndexWriter(dir, iwriterConfig);</div><div class="line">     <span class="keyword">return</span> indexWriter;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">//索引更新操作，索引中的更新逻辑是将旧的文档删除，再将新的文档新增进去</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">updateLucene</span><span class="params">(String indexPath，要更新的数据参数)</span> </span>&#123;</div><div class="line">      IndexSearcher indexSearcher = getIndexSearcher(indexPath);</div><div class="line">      Document oldDoc = ....<span class="comment">//根据IndexSearcher查询得到被更新的旧文档--1处</span></div><div class="line">      Document newDoc = ....<span class="comment">//根据旧文档和要更新的具体数据得到要更新的新文档</span></div><div class="line">      indexWriter.updateDocument(doc);<span class="comment">//更新操作--3处</span></div><div class="line">      removeReader(indexPath);<span class="comment">//移除IndexSearcher缓存对象--2处</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>问题3中的这个跟新操作写完之后实际应用的时候，出了好几个问题，都是Lucene里面比较常见，容易犯错的问题。<br>异常1：org.apache.lucene.store.AlreadyClosedException: this IndexReader is closed<br>经过分析之后发现是因为多并发情况下时，同一个索引文件对应的Reader对象别多个线程持有，在我这个代码里存在线程1刚好执行完2处代码将Reader缓存清理掉(同时关掉了该Reader对象)，而刚好，线程2在执行代码1处的查询操作，这个时候就会出现这个异常。在我这个代码里的更新操作总共分3部，首先查询出旧的文档，紧接着构造新文档并执行更新操作，第三步是移除缓存，所以这三步应该归结为一个原子操作，所以我很自然的就想到了同步锁synchronized，在该方法上添加Class级的同步锁，由于我的代码里有多个这种更新索引的方法，所以每个方法都加一个同步锁，后来证明这种方式也不行仍然出现了该异常，具体代码的问题出在哪我现在真记不起来了，而且这种多个静态方法都加Class级的同步锁性能注定不怎么样，后续的解决办法下面问题中继续说。<br>异常2：LockObtainFailedException<br>经过查询资料知道这是因为在IndexWriter的构造函数在试图获取另外一个IndexWriter已经加锁的索引目录时抛出的错误，这是因为在Lucene中只能允许一个线程去进行写操作，当该线程获取到这个写对象后，会在索引目录中生成一个write.lock文件，所以在这个线程没有释放该索引目录的锁对象前，其他线程无法获取该目录的写对象，根据这个write.lock文件，我们可以很方便的判断当前索引目录有没有被写对象占用，改造后的代码如下： <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> Object synchronized_w = <span class="keyword">new</span> Object();</div><div class="line">      <span class="function"><span class="keyword">private</span> IndexWriter <span class="title">getIndexWriter</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">synchronized</span> (synchronized_w) &#123;</div><div class="line">              <span class="keyword">try</span> &#123;</div><div class="line">                  Directory dir = <span class="keyword">null</span>;</div><div class="line">                  <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">                      dir = FSDirectory.open(<span class="keyword">new</span> File(indexPath));</div><div class="line">                      <span class="keyword">if</span>(!IndexWriter.isLocked(dir)) &#123;</div><div class="line">                          <span class="keyword">if</span>(indexWriter == <span class="keyword">null</span>) &#123;</div><div class="line">                              indexWriter = <span class="keyword">new</span> IndexWriter(dir, <span class="keyword">new</span> IndexWriterConfig(Version.LUCENE_43, LuceneManager.getAnalyzer()));</div><div class="line">                          &#125;</div><div class="line">                          <span class="keyword">break</span>;</div><div class="line">                      &#125; <span class="keyword">else</span> &#123;</div><div class="line">                          <span class="keyword">try</span> &#123;</div><div class="line">                              dir.close();</div><div class="line">                              Thread.sleep(<span class="number">100</span>);</div><div class="line">                              Thread.yield();</div><div class="line">                          &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                              logger.error(<span class="string">"获取索引"</span> + indexPath + <span class="string">"写对象IndexWriter失败"</span>, e);</div><div class="line">                          &#125;</div><div class="line">                      &#125;</div><div class="line">                  &#125;</div><div class="line">              &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                  logger.error(<span class="string">"获取索引"</span> + indexPath + <span class="string">"写对象IndexWriter失败"</span>, e);</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">return</span> indexWriter;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>获取索引写对象的代码经过如此改造之后，成功运行，没有出现问题。</p>
+<ol>
+<li>继续问题4中的第一个异常，分析之后觉得问题出现的最终原因还是在第三步移除缓存时关闭Reader对象这里，所以如果Lucene能不需要手动关闭Reader对象就可以解决这个问题，带着这个问题我重新去查看了Lucene4.3的API文档，看了之后发现了两个个比较重要的API，DirectoryReader.openIfChanged(dirReader)和DirectoryReader.isCurrent()，前者是个静态方法，可以判断当前Reader对象的索引有没有被修改过，如果索引文件被更新过则重新加载该索引目录，但是这个时候的重新加载则比单纯的open(indexPath)要高效很多，它只是重新加载被更新过的文档，而单纯的open则是加载全部的文档，重新加载后我们查询的时候就可以查询到最新的数据结果了。而第二个API是个实例方法，用来判断当前Reader对象所代表的索引文件是不是最开始那个，即判断当前索引文件有没有被更新过，有更新则返回false，否则返回true，则两个API结合在一起刚好可以解决我之前的Reader关闭问题。有了这种重新加载机制，我就不需要每次更新索引之后清除缓存关掉旧的Reader对象并打开新的对象。改造的代码如下： <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> IndexSearcher <span class="title">getIndexSearcher</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">synchronized</span> (lock_r) &#123;</div><div class="line">              <span class="keyword">try</span> &#123;</div><div class="line">                  <span class="keyword">if</span>(indexSearcher == <span class="keyword">null</span> &amp;&amp; dirReader == <span class="keyword">null</span>) &#123;</div><div class="line">                      dirReader = DirectoryReader.open(FSDirectory.open(<span class="keyword">new</span> File(indexPath)));</div><div class="line">                      indexSearcher = <span class="keyword">new</span> IndexSearcher(dirReader);</div><div class="line">                  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(indexSearcher != <span class="keyword">null</span> &amp;&amp; dirReader != <span class="keyword">null</span> &amp;&amp; !dirReader.isCurrent()) &#123;</div><div class="line">                      <span class="comment">//判断有没有更新过，有更新则重新加载更新过的文档</span></div><div class="line">                      DirectoryReader newDirReader = DirectoryReader.openIfChanged(dirReader);</div><div class="line">                      indexSearcher = <span class="keyword">new</span> IndexSearcher(newDirReader);</div><div class="line">                      dirReader = newDirReader;</div><div class="line">                  &#125;</div><div class="line">              &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                  logger.error(<span class="string">"获取索引"</span> + indexPath + <span class="string">"搜索对象IndexSearcher失败"</span>, e);</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">return</span> indexSearcher;</div><div class="line">      &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个代码里面有个问题就是旧的Reader对象没有关闭掉，如果加上这reader.close()这句话又会出现那个异常，不加的话运行没有问题，但是我总觉得不关掉不太好，感觉占着资源。然后继续查看API文档，发现了SearcherManager这个类，这个是Lucene里面提供的工具类，主要是用来了管理IndexSearcher对象的，仔细阅读了该类的说明及其源代码后觉得用这个工具类更靠谱，所以最后毫不犹豫的重新写了一个IndexSearcher对象的获取方式，代码如下：<br>        <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> IndexSearcher <span class="title">getIndexSearcher</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    IndexSearcher indexSearcher = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">synchronized</span> (synchronized_r) &#123;</div><div class="line">        <span class="keyword">if</span>(searcherManager == <span class="keyword">null</span>) &#123;</div><div class="line">            searcherManager = <span class="keyword">new</span> SearcherManager(FSDirectory.open(<span class="keyword">new</span> File(indexPath)), <span class="keyword">new</span> SearcherFactory());</div><div class="line">        &#125;</div><div class="line">        searcherManager.maybeRefresh();<span class="comment">//这个方法同DirectoryReader.openIfChanged(dirReader)效果一样，其实底层还是调用的该方法实现的</span></div><div class="line">        indexSearcher = searcherManager.acquire();<span class="comment">//借用一个IndexSearcher对象的引用，记住该对象用完之后要归还的，有借有还再借不难</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> indexSearcher;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">closeIndexSearcher</span><span class="params">(IndexSearcher indexSearcher)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    <span class="keyword">if</span>(indexSearcher != <span class="keyword">null</span>) &#123;</div><div class="line">        searcherManager.release(indexSearcher);<span class="comment">//归还从SearcherManager处借来的IndexSearcher对象</span></div><div class="line">    &#125;</div><div class="line">    indexSearcher = <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如此实现之后，就不需要我们自己管理这个旧的Reader对象，而是交由Lucene本身自己去进行管理，而且此种实现方式更简洁明了，也完美解决了我的问题。</p>
+<p>实现了索引更新后的数据的读取实时性就可以实现一个简单的实时搜索功能。</p>
+<p>最后为了保证项目中Lucene使用的稳定性，我对索引文件的更新和查询都添加了读写锁ReentrantReadWriteLock来进行控制，更新的时候添加写锁，查询的时候添加读锁，这样更加的保证了Lucene使用的安全性。</p>
+<hr>
+<p>简单介绍下读写锁ReentrantReadWriteLock的机制(多线程并发的时候很有用)：</p>
+<ol>
+<li>在某个线程获取到读锁时，其他线程不能获取写锁，但是可以获取读锁</li>
+<li>在某个线程获取到写锁时，其他线程既不能获取写锁也不能获取读锁</li>
+<li>给个示例代码：<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> ReentrantReadWriteLock  w_lock = <span class="keyword">new</span> ReentrantReadWriteLock();<span class="comment">//读写锁</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateDocument</span><span class="params">(Term term, Document doc)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           w_lock.writeLock().lock();<span class="comment">//获得写锁</span></div><div class="line">           getIndexWriter();</div><div class="line">           indexWriter.updateDocument(term, doc);</div><div class="line">           indexWriter.commit();</div><div class="line">       &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> Exception(e);</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           closeIndexWriter();</div><div class="line">           w_lock.writeLock().unlock();释放写锁</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</code></pre></li>
+</ol>
+<p>OK，到这里我的问题基本上就写完了，有时间再去研究研究Lucene的其他的特性。</p>
+<hr>
+<p>write by laohu<br>2014年12月11日19:12:55</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/Lucene近实时搜索应用总结.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/Lucene近实时搜索应用总结.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/浅谈JSONP跨域请求.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    浅谈JSONP跨域请求
+                
+            </div>
+        </a>
+    
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="Lucene近实时搜索应用总结.html" data-title="Lucene近实时搜索应用总结" data-url="http://ittiger.cn/Lucene近实时搜索应用总结.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>基于OkHttp的封装库TigerOkHttp的使用 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在前面熟悉了OkHttp的用法之后，为了简化用法同时适用于我的项目，我针对OkHttp进行了更进一步的封装(源码及其Demo地址在https://github.com/huyongli/TigerOkHttp)
+TigerOKHttp特性封装之后其支持的功能特性包括如下：
+
+一般的get同步阻塞请求和异步请求
+
+一般的post同步阻塞请求和异步请求
+
+实现了文件上传功能（包含文件上传进度回调显示）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于OkHttp的封装库TigerOkHttp的使用">
+<meta property="og:url" content="http://ittiger.cn/基于OkHttp的封装库TigerOkHttp的使用.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="在前面熟悉了OkHttp的用法之后，为了简化用法同时适用于我的项目，我针对OkHttp进行了更进一步的封装(源码及其Demo地址在https://github.com/huyongli/TigerOkHttp)
+TigerOKHttp特性封装之后其支持的功能特性包括如下：
+
+一般的get同步阻塞请求和异步请求
+
+一般的post同步阻塞请求和异步请求
+
+实现了文件上传功能（包含文件上传进度回调显示）">
+<meta property="og:updated_time" content="2016-07-29T06:06:17.815Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于OkHttp的封装库TigerOkHttp的使用">
+<meta name="twitter:description" content="在前面熟悉了OkHttp的用法之后，为了简化用法同时适用于我的项目，我针对OkHttp进行了更进一步的封装(源码及其Demo地址在https://github.com/huyongli/TigerOkHttp)
+TigerOKHttp特性封装之后其支持的功能特性包括如下：
+
+一般的get同步阻塞请求和异步请求
+
+一般的post同步阻塞请求和异步请求
+
+实现了文件上传功能（包含文件上传进度回调显示）">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-基于OkHttp的封装库TigerOkHttp的使用" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            基于OkHttp的封装库TigerOkHttp的使用
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/基于OkHttp的封装库TigerOkHttp的使用.html">
+            <time datetime="2016-01-06T11:58:01.000Z" itemprop="datePublished">2016-01-06</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/OkHttp/">OkHttp</a>, <a class="tag-link" href="/tags/TigerOkHttp/">TigerOkHttp</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>在前面熟悉了OkHttp的用法之后，为了简化用法同时适用于我的项目，我针对OkHttp进行了更进一步的封装(源码及其Demo地址在<a href="https://github.com/huyongli/TigerOkHttp" target="_blank" rel="external">https://github.com/huyongli/TigerOkHttp</a>)</p>
+<h3 id="TigerOKHttp特性"><a href="#TigerOKHttp特性" class="headerlink" title="TigerOKHttp特性"></a>TigerOKHttp特性</h3><p>封装之后其支持的功能特性包括如下：</p>
+<ol>
+<li><p>一般的get同步阻塞请求和异步请求</p>
+</li>
+<li><p>一般的post同步阻塞请求和异步请求</p>
+</li>
+<li><p>实现了文件上传功能（包含文件上传进度回调显示）</p>
+</li>
+<li><p>实现了大文件下载功能，只需要指定文件下载路径即可，也包含了下载进度的回调显示</p>
+</li>
+<li><p>实现了请求结果的自动解析，用户也可以根据需求扩展自定义结果解析类</p>
+</li>
+<li><p>对所有请求都支持直接将结果解析转换为JavaBean对象或集合</p>
+</li>
+<li><p>支持对返回结果结构的自定义，例如设置返回结果结构为：{flag：1|0，error：错误信息，result：请求结果}，结果解析的时候会按照此结构进行结果解析</p>
+</li>
+<li><p>支持取消某个请求</p>
+</li>
+</ol>
+<a id="more"></a>
+<p>如果还不知道如何使用OkHttp请参考我的上一篇文章 Android中OkHttp的使用 进行了解。</p>
+<h3 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h3><p>所有的请求在使用之前，先在Application里执行<code>TigerOkHttp.init(new TigerHttpConfig(getApplicationContext()));</code>进行<code>TigerOkHttp</code>的初始化操作。</p>
+<p>TigerHttpConfig中主要是设置请求的全局性配置：</p>
+<ol>
+<li><p><code>TigerHttpConfig.readTimeOut：</code>设置全局请求的数据读取超时时间，默认为30s</p>
+</li>
+<li><p><code>TigerHttpConfig.writeTimeOut：</code>设置全局请求的数据写入超时时间，默认为15s</p>
+</li>
+<li><p><code>TigerHttpConfig.connectTimeOut：</code>设置全局请求的连接超时时间，默认为15s</p>
+</li>
+<li><p><code>TigerHttpConfig.cacheSize：</code>设置全局请求的缓存大小，默认为10M</p>
+</li>
+<li><p><code>TigerHttpConfig.cacheDirectory：</code>设置全局请求的缓存存储路径，默认为系统给应用分配的缓存路径</p>
+</li>
+<li><p><code>TigerHttpConfig.isWrapperResult：</code>设置全局请求结果是否对结果进行了封装，默认为true</p>
+</li>
+<li><p><code>TigerHttpConfig.wrapperJsonResult：</code>设置全局请求结果的结构类型，在<code>isWrapperResult</code>为true时才起作用</p>
+</li>
+</ol>
+<p>WrapperJson主要自定义设置全局请求结果的结构类型：</p>
+<ol>
+<li><p><code>WrapperJson.code_name：</code>设置请求成功与否的状态码字段，默认为：flag</p>
+</li>
+<li><p><code>WrapperJson.result_name：</code>设置请求成功后结果字段，默认为：result</p>
+</li>
+<li><p><code>WrapperJson.error_name：</code>设置请求失败后的错误信息字段(仅在请求失败时才有值)，默认为：error</p>
+</li>
+<li><p><code>WrapperJson.code_error_value：</code>设置请求失败的状态码值，当请求状态码与此值相等时代表请求失败</p>
+</li>
+</ol>
+<h3 id="Get请求"><a href="#Get请求" class="headerlink" title="Get请求"></a>Get请求</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*-------------------- 以下为Get同步阻塞请求 -------------------------------*/</span></div><div class="line"></div><div class="line"><span class="comment">//根据请求URL构造请求对象，请求成功后直接返回结果为Model对象</span></div><div class="line">TigerJsonRequest&lt;Model&gt; request = <span class="keyword">new</span> TigerJsonRequest&lt;Model&gt;(URL, Model.class);</div><div class="line"><span class="comment">/*</span></div><div class="line"> * 如果要同步请求返回Model集合的话，请求对象这样构造</div><div class="line"> * TigerJsonRequest&lt;List&lt;Model&gt;&gt; request = new TigerJsonRequest&lt;List&lt;Model&gt;&gt;(URL, Model.class);</div><div class="line"> */</div><div class="line"><span class="comment">//以下添加三个请求参数</span></div><div class="line">request.addParam(<span class="string">"value"</span>, <span class="string">"同步get请求-返回Model"</span>)</div><div class="line">.addParam(<span class="string">"isModel"</span>, <span class="keyword">true</span>)</div><div class="line">.addParam(<span class="string">"isList"</span>, <span class="keyword">false</span>);</div><div class="line"><span class="comment">//同步阻塞请求，直接返回Model对象</span></div><div class="line">Model result = TigerOkHttp.getSync(request);</div><div class="line"><span class="comment">//同步阻塞请求，直接返回Model集合</span></div><div class="line"><span class="comment">//List&lt;Model&gt; result = TigerOkHttp.getSync(request);</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*-------------------- 以下为Get异步请求 ------------------------------*/</span></div><div class="line"><span class="comment">//根据请求URL构造请求对象，请求成功直接返回结果为Model集合</span></div><div class="line">TigerJsonRequest&lt;List&lt;Model&gt;&gt; request = <span class="keyword">new</span> TigerJsonRequest&lt;List&lt;Model&gt;&gt;(URL);</div><div class="line"><span class="comment">//添加三个请求参数</span></div><div class="line">request.addParam(<span class="string">"value"</span>, <span class="string">"异步get请求-返回List&lt;Model&gt;"</span>)</div><div class="line">.addParam(<span class="string">"isModel"</span>, <span class="keyword">true</span>)</div><div class="line">.addParam(<span class="string">"isList"</span>, <span class="keyword">true</span>)</div><div class="line">.setRequestCallback(<span class="keyword">new</span> RequestCallback&lt;List&lt;Model&gt;&gt;() &#123;<span class="comment">//设置异步请求回调</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(List&lt;Model&gt;result)</span> </span>&#123;</div><div class="line">        showResult(result.toString());</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(TigerHttpException e)</span> </span>&#123;</div><div class="line">        showResult(e.getMessage());</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"><span class="comment">//开始异步请求</span></div><div class="line">TigerOkHttp.getAsync(request);</div></pre></td></tr></table></figure>
+<p>上面即为一般Get同步阻塞请求和异步请求的方式，对这两个请求需要说明几点：</p>
+<ol>
+<li><p>首先根据请求URL构造一个请求对象TigerJsonRequest，如果为同步阻塞请求必须调用具有两个参数的构造函数以设置请求地址和设置请求返回的结果类型，如果是异步请求则只需要调用一个参数的构造函数设置请求地址即可(异步请求的返回结果类型会自动根据泛型判断)</p>
+</li>
+<li><p>在请求对象添加此请求相关的请求参数</p>
+</li>
+<li><p>如果是异步请求，在请求对象中添加异步请求回调接口RequestCallback</p>
+</li>
+<li><p>根据是否为异步请求在TigerOkHttp中选择对应的请求方法开始请求操作</p>
+</li>
+<li><p>如果解析后返回Model对象话，服务端返回的结果必须是JSON字符串，如果解析后返回Model集合的话，服务端返回的结果必须是JSON数组字符串</p>
+</li>
+</ol>
+<h3 id="Post请求"><a href="#Post请求" class="headerlink" title="Post请求"></a>Post请求</h3><p>这里的Post同步、异步请求和上面的Get的同步异步请求方式基本上一样，构造请求对象TigerJsonRequest的方式是一模一样的，唯一的区别只是在最后发起请求操作上更换了请求方法</p>
+<ol>
+<li><p>post同步阻塞请求的发起方式为：<code>T result = TigerOkHttp.postSync(request);</code></p>
+</li>
+<li><p>post异步请求的发起方式为：<code>TigerOkHttp.postAsync(request);</code></p>
+</li>
+</ol>
+<h3 id="自定义结果解析器"><a href="#自定义结果解析器" class="headerlink" title="自定义结果解析器"></a>自定义结果解析器</h3><p>当<code>TigerJsonRequest</code>自带的默认解析器<code>TigerJsonParser</code>无法满足你的功能需求时，我们只需要简单的两步即可为某次请求实现自定义解析器：</p>
+<ol>
+<li><p>继承<code>TigerParser&lt;T</code>&gt;(会自动根据设置的全局结果结构进行解析判断请求是否成功、拿到请求的真正结果数据)这个解析基类然后实现<code>public abstract T parser(BufferedSource source) throws TigerHttpException;</code>方法</p>
+</li>
+<li><p>通过<code>TigerJsonRequest</code>类中的方法<code>setDataParser(TigerParser dataParser)</code>设置此次请求的结果解析器</p>
+</li>
+</ol>
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p>上传文件模块我是在<code>TigerJsonRequest</code>基础上扩展出了一个专门针对上传文件的请求对象<code>TigerUploadRequest</code>，具体的上传文件实现方式如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//根据上传请求地址和文件路径构造文件上传请求对象</span></div><div class="line">TigerUploadRequest&lt;String&gt; request = <span class="keyword">new</span> TigerUploadRequest&lt;String&gt;(url, filePath);</div><div class="line"><span class="comment">//设置上传回调监听 </span></div><div class="line">request.setRequestCallback(</div><div class="line">     <span class="keyword">new</span> RequestCallback&lt;String&gt;() &#123;</div><div class="line">         <span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</div><div class="line">             <span class="keyword">super</span>.onPreExecute();</div><div class="line">             <span class="comment">//此处可以初始化显示上传进度UI</span></div><div class="line">         &#125;</div><div class="line"> </div><div class="line">         <span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(String result)</span> </span>&#123;</div><div class="line">             <span class="comment">//文件上传成功</span></div><div class="line">         &#125;</div><div class="line"> </div><div class="line">         <span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoading</span><span class="params">(<span class="keyword">long</span> count, <span class="keyword">long</span> current)</span> </span>&#123;</div><div class="line">             <span class="keyword">super</span>.onLoading(count, current);</div><div class="line">             <span class="comment">//此处可以更新上传进度</span></div><div class="line">         &#125;</div><div class="line"></div><div class="line">         <span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(TigerHttpException e)</span> </span>&#123;</div><div class="line">             <span class="comment">//文件上传失败</span></div><div class="line">         &#125;</div><div class="line"> </div><div class="line">         <span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAfterExecute</span><span class="params">()</span> </span>&#123;</div><div class="line">             <span class="keyword">super</span>.onAfterExecute();</div><div class="line">             <span class="comment">//此处可以隐藏上传进度条</span></div><div class="line">         &#125;</div><div class="line"> &#125;);</div><div class="line"> <span class="comment">//发起上传操作</span></div><div class="line"> TigerOkHttp.postAsync(request);</div></pre></td></tr></table></figure></p>
+<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><p>下载文件功能需要用到另外一个请求对象TigerFileRequest<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//根据下载请求地址和下载文件的保存路径构造请求对象</span></div><div class="line">TigerFileRequest request = <span class="keyword">new</span> TigerFileRequest(URL, fileSavePath);</div><div class="line"><span class="comment">//添加一个请求参数</span></div><div class="line">request.addParam(<span class="string">"method"</span>, <span class="string">"download"</span>)</div><div class="line"><span class="comment">//设置下载过程中的回调接口</span></div><div class="line">.setRequestCallback(<span class="keyword">new</span> RequestCallback&lt;File&gt;() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onPreExecute();</div><div class="line">        <span class="comment">//此处初始化显示下载进度条UI</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(File result)</span> </span>&#123;</div><div class="line">        <span class="comment">//下载成功，同时返回下载成功的文件</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoading</span><span class="params">(<span class="keyword">long</span> count, <span class="keyword">long</span> current)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onLoading(count, current);</div><div class="line">        <span class="comment">//更新下载进度UI</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(TigerHttpException e)</span> </span>&#123;</div><div class="line">        <span class="comment">//下载失败</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAfterExecute</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onAfterExecute();</div><div class="line">        <span class="comment">//隐藏下载进度条UI</span></div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"><span class="comment">//发起下载请求</span></div><div class="line">TigerOkHttp.getAsync(request);</div></pre></td></tr></table></figure></p>
+<h3 id="取消某个请求"><a href="#取消某个请求" class="headerlink" title="取消某个请求"></a>取消某个请求</h3><p>取消某个请求只需要调用<code>TigerOkHttp.cancel(request.getTag())</code>即可，如果没有手动设置请求对象request的tag值，请求的时候会自动为这次请求生成一个唯一的tag</p>
+<p>以上基本上就是TigerOkHttp框架的所有功能的使用方法，欢迎各位下载使用。</p>
+<p>由于本人能力有限，此框架可能存在某些不足的地方，如果各位发现问题，欢迎提出，我会尽快解决，另外我会不断丰富完善此框架的功能。</p>
+<p>write by laohu</p>
+<p>2016-1-6 </p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/基于OkHttp的封装库TigerOkHttp的使用.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/基于OkHttp的封装库TigerOkHttp的使用.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/RecyclerView绘制原理.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    RecyclerView绘制原理
+                
+            </div>
+        </a>
+    
+    
+        <a href="/Android中OkHttp的使用.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Android中OkHttp的使用</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="基于OkHttp的封装库TigerOkHttp的使用.html" data-title="基于OkHttp的封装库TigerOkHttp的使用" data-url="http://ittiger.cn/基于OkHttp的封装库TigerOkHttp的使用.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>TextView之SpannableStringBuilder使用总结 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="最近项目中碰到一个TextView的显示问题，想了各种办法之后，最后还是用SpannableStringBuilder解决的。这篇文章就记录下我的问题的解决过程，同时总结下SpannableStringBuilder在TextView中的不同用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TextView之SpannableStringBuilder使用总结">
+<meta property="og:url" content="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="最近项目中碰到一个TextView的显示问题，想了各种办法之后，最后还是用SpannableStringBuilder解决的。这篇文章就记录下我的问题的解决过程，同时总结下SpannableStringBuilder在TextView中的不同用法。">
+<meta property="og:image" content="http://ittiger.cn/img/SpannableStringBuilder.png">
+<meta property="og:updated_time" content="2016-11-07T10:07:51.073Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TextView之SpannableStringBuilder使用总结">
+<meta name="twitter:description" content="最近项目中碰到一个TextView的显示问题，想了各种办法之后，最后还是用SpannableStringBuilder解决的。这篇文章就记录下我的问题的解决过程，同时总结下SpannableStringBuilder在TextView中的不同用法。">
+<meta name="twitter:image" content="http://ittiger.cn/img/SpannableStringBuilder.png">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                42
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                41
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-TextView-SpannableStringBuilder-usage-summary" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            TextView之SpannableStringBuilder使用总结
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/TextView-SpannableStringBuilder-usage-summary.html">
+            <time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/SpannableStringBuilder/">SpannableStringBuilder</a>, <a class="tag-link" href="/tags/TextView/">TextView</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>最近项目中碰到一个<code>TextView</code>的显示问题，想了各种办法之后，最后还是用<code>SpannableStringBuilder</code>解决的。这篇文章就记录下我的问题的解决过程，同时总结下<code>SpannableStringBuilder</code>在<code>TextView</code>中的不同用法。</p>
+<a id="more"></a>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>项目中<code>GridView</code>有两列，每个<code>Item</code>视图都有一个<code>TextView</code>(设置了最大显示行数)，项目业务要求每列的<code>TextView</code>展示高度相同，但是因为显示的文本你不知道有多少行，所以在布局的时候不能设置固定高度，而是设置为<code>wrap_content</code>，所以为了保证两列的<code>TextView</code>高度一致，只需要保证他们展示内容的行数一致就行。</p>
+<p>而上面的问题只需要在内容行数达不到最大显示行数时，为其手动补齐行数即可。</p>
+<p><em><font color="red">这里有个问题就是如何计算当前要展示的文本在此<code>TextView</code>中能展示多少行，这个地方直接通过<code>textView.getLineCount()</code>是不行的，我是通过<code>StaticLayout</code>计算当前文本能显示的行数，对于<code>StaticLayout</code>的使用这篇文章就不介绍了，不会的同学可以去google下，后面的文章我会专门介绍<code>StaticLayout</code>的使用</font></em></p>
+<p>有了上面的解决方法之后，我在行数不足时我手动添加了换行符<code>\n</code>补齐行数，但是运行之后，发现达不到效果，因为虽然手动换行，但是通过换行符<code>\n</code>换行之后的高度达不到实际文本行显示的高度，因此这种方式还是没法保证两边<code>TextView</code>高度一致。</p>
+<p>既然单纯的换行无法达到我们想要的效果，那我就在换行之后再添加几个文字，有了这几个文字就可以让其真正达到多行文本的效果了。但是多的这几个字会显示在界面上，所以我们只需要让这几个文字不显示出来或者让这几个文字完全透明即可。</p>
+<p>将<code>TextView</code>的部分文本设置为透明色，最后查询之后发现<code>SpannableStringBuilder</code>可以实现这样的效果，下面我就总结下<code>SpannableStringBuilder</code>结合<code>TextView</code>的使用方法。</p>
+<h2 id="SpannableStringBuilder使用总结"><a href="#SpannableStringBuilder使用总结" class="headerlink" title="SpannableStringBuilder使用总结"></a>SpannableStringBuilder使用总结</h2><p>我们来看下<code>SpannableStringBuilder</code>的官方介绍</p>
+<blockquote>
+<p>This is the class for text whose content and markup can both be changed</p>
+</blockquote>
+<p>通过上面的介绍可以看出<code>SpannableStringBuilder</code>是一个内容和标记都可以更改的类，它其实是<code>CharSequence</code>的子类。</p>
+<h3 id="SpannableStringBuilder使用效果"><a href="#SpannableStringBuilder使用效果" class="headerlink" title="SpannableStringBuilder使用效果"></a>SpannableStringBuilder使用效果</h3><p><img src="/img/SpannableStringBuilder.png" alt=""></p>
+<h3 id="文本高亮"><a href="#文本高亮" class="headerlink" title="文本高亮"></a>文本高亮</h3><p>使用<code>ForegroundColorSpan</code>为<code>TextView</code>的部分文本添加指定颜色，使这部分文本高亮显示<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//高亮的开始位置</span></div><div class="line">builder.append(<span class="string">"文本高亮"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//高亮的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> ForegroundColorSpan(Color.RED), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>ForegroundColorSpan</code>代表设置文本高亮的颜色</li>
+<li><code>Spanned.SPAN_INCLUSIVE_EXCLUSIVE</code>这个常量表示高亮开始位置但不包含结束位置的字符，还有几个类似的常量，这几个常量与<code>Stirng.subString()</code>方法的参数代表的意思是类似的。</li>
+<li>上面我的解决办法中需要文本完全透明，只需要将高亮的颜色设置为100%透明即可</li>
+</ul>
+<h3 id="URL超链接效果"><a href="#URL超链接效果" class="headerlink" title="URL超链接效果"></a>URL超链接效果</h3><p>使用<code>URLSpan</code>为<code>TextView</code>的部分文本添加超链接效果<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//URL文本开始位置</span></div><div class="line">builder.append(<span class="string">"URL连接"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//URL文本结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> URLSpan(<span class="string">"www.baidu.com"</span>) &#123;</div><div class="line">     <span class="meta">@Override</span></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View widget)</span> </span>&#123;</div><div class="line">	     <span class="comment">//URLSpan点击响应</span></div><div class="line">         UIUtil.showToast(context, <span class="string">"URLSpan点击"</span>);</div><div class="line">     &#125;</div><div class="line"> &#125;, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div><div class="line"><span class="comment">//必须设置下面的方法，否则URLSpan点击事件无法响应</span></div><div class="line">mTextView.setMovementMethod(LinkMovementMethod.getInstance());</div></pre></td></tr></table></figure></p>
+<ul>
+<li>使用<code>URLSpan</code>即可将<code>TextView</code>的部分文本设置为超链接显示样式，同时还可以实现点击响应，但是必须调用<code>TextView.setMovementMethod(LinkMovementMethod.getInstance());</code>点击响应才会有效</li>
+</ul>
+<h3 id="设置文本背景色"><a href="#设置文本背景色" class="headerlink" title="设置文本背景色"></a>设置文本背景色</h3><p>使用<code>BackgroundColorSpan</code>为<code>TextView</code>的部分文本添加背景色<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置背景色的开始位置</span></div><div class="line">builder.append(<span class="string">"设置背景色"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置背景色的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> BackgroundColorSpan(Color.BLUE), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>BackgroundColorSpan</code>可以将<code>TextView</code>的部分文本添加背景色，与<code>ForegroundColorSpan</code>的使用方式相同，只需要设置颜色即可</li>
+</ul>
+<h3 id="添加文本下划线"><a href="#添加文本下划线" class="headerlink" title="添加文本下划线"></a>添加文本下划线</h3><p>使用<code>UnderlineSpan</code>为<code>TextView</code>的部分文本添加下划线<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置下划线的开始位置</span></div><div class="line">builder.append(<span class="string">"下划线文本"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置下划线的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> UnderlineSpan(), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<h3 id="文本添加删除线"><a href="#文本添加删除线" class="headerlink" title="文本添加删除线"></a>文本添加删除线</h3><p>使用<code>StrikethroughSpan</code>为<code>TextView</code>的部分文本添加删除线<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置删除线的开始位置</span></div><div class="line">builder.append(<span class="string">"删除线文本"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置删除线的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> StrikethroughSpan(), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<h3 id="图片替换文本"><a href="#图片替换文本" class="headerlink" title="图片替换文本"></a>图片替换文本</h3><p>使用<code>ImageSpan</code>为<code>TextView</code>的部分文本替换为图片<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//替换为图片的开始位置</span></div><div class="line">builder.append(<span class="string">"图片替换文本"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//替换为图片的结束位置</span></div><div class="line">Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);</div><div class="line">drawable.setBounds(<span class="number">0</span>, <span class="number">0</span>, <span class="number">50</span>, <span class="number">50</span>);<span class="comment">//设置图片为50px大小</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<h3 id="设置部分粗体"><a href="#设置部分粗体" class="headerlink" title="设置部分粗体"></a>设置部分粗体</h3><p>使用<code>StyleSpan</code>为<code>TextView</code>的部分文本设置为粗体<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置粗体的开始位置</span></div><div class="line">builder.append(<span class="string">"粗体文本"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置粗体的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure></p>
+<h3 id="为任意文本添加点击响应"><a href="#为任意文本添加点击响应" class="headerlink" title="为任意文本添加点击响应"></a>为任意文本添加点击响应</h3><p>使用<code>ClickableSpan</code>为<code>TextView</code>的任意文本添加点击响应<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置删除线的开始位置</span></div><div class="line">builder.append(<span class="string">"单击响应文本"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置删除线的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> ClickableSpan() &#123;<span class="comment">//将任意文本设置为可点击</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View widget)</span> </span>&#123;</div><div class="line">        UIUtil.showToast(StyleTextViewActivity.<span class="keyword">this</span>, <span class="string">"ClickableSpan"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateDrawState</span><span class="params">(TextPaint ds)</span> </span>&#123;</div><div class="line">        <span class="comment">//此方法的默认实现会出现下划线效果，去掉其默认实现</span></div><div class="line">    &#125;</div><div class="line">  &#125;, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div><div class="line">mTextView.setMovementMethod(LinkMovementMethod.getInstance());</div></pre></td></tr></table></figure></p>
+<h3 id="组合使用各效果"><a href="#组合使用各效果" class="headerlink" title="组合使用各效果"></a>组合使用各效果</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SpannableStringBuilder builder = <span class="keyword">new</span> SpannableStringBuilder(<span class="string">"普通文本"</span>);</div><div class="line"><span class="keyword">int</span> start = builder.length();<span class="comment">//设置组合使用的开始位置</span></div><div class="line">builder.append(<span class="string">"组合使用"</span>);</div><div class="line"><span class="keyword">int</span> end = builder.length();<span class="comment">//设置组合使用的结束位置</span></div><div class="line">builder.setSpan(<span class="keyword">new</span> ForegroundColorSpan(Color.WHITE), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">builder.setSpan(<span class="keyword">new</span> BackgroundColorSpan(Color.RED), start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);</div><div class="line">mTextView.setText(builder);</div></pre></td></tr></table></figure>
+<p>上面这些就是<code>SpannableStringBuilder</code>结合<code>TextView</code>的一些使用方法，其实使用起来还是很简单的。</p>
+<p>具体使用示例代码请参考：<a href="https://github.com/huyongli/AndroidDemo/blob/master/app/src/main/java/cn/ittiger/demo/StyleTextViewActivity.java" target="_blank" rel="external">https://github.com/huyongli/AndroidDemo</a></p>
+<p>write by laohu<br>2016年11月5日21:45:48</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/Nine-Patch-Affect-Padding-Principle.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Android基础之9-Patch(9.PNG)与padding
+                
+            </div>
+        </a>
+    
+    
+        <a href="/My-9.png-hold-the-fat-lady-tour.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">记一次9.png的填坑之旅</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="TextView-SpannableStringBuilder-usage-summary.html" data-title="TextView之SpannableStringBuilder使用总结" data-url="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
+                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
+                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
+                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextView-SpannableStringBuilder-usage-summary.html" class="title">TextView之SpannableStringBuilder使用总结</a></p>
+                            <p class="item-date"><time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 10px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
