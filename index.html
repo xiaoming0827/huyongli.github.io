@@ -252,16 +252,7 @@ var _hmt = _hmt || [];
         <div class="article-entry" itemprop="articleBody">
         
             <p><p>Behavior是Android Design包中出现的一个概念，Android Design包中很多控件的动画效果都是使用Behavior实现的，所以想要更好的实现Material Design风格的应用就有必要弄清楚Behavior。这篇文章从简单开始，介绍如何自定义Behavior以实现快速返回的效果。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>先看官方介绍<a href="https://developer.android.google.cn/reference/android/support/design/widget/CoordinatorLayout.Behavior.html">https://developer.android.google.cn/reference/android/support/design/widget/CoordinatorLayout.Behavior.html</a></p>
-<blockquote>
-<blockquote>
-<p>Interaction behavior plugin for child views of CoordinatorLayout.</p>
-<p>A Behavior implements one or more interactions that a user can take on a child view. These interactions may include drags, swipes, flings, or any other gestures.</p>
-</blockquote>
-</blockquote>
-<p>上面的介绍说Behavior是CoordinatorLayout子视图的一个交互插件，它可以为子视图实现一个或多个交互，这些交互包括拖拽，滑动或其他的手势操作。</p>
-<p>通过上面的介绍我们知道Behavior是作用于CoordinatorLayout子视图的，而CoordinatorLayout我们可以把它看做一个FrameLayout。</p>
-<p>根据我的理解来说Behavior其实就是一系列手势操作行为的回调，通过这些回调来处理CoordinatorLayout子视图的手势操作。</p></p>
+<p>还是先看下最终实现的效果<br><img src="/img/back-top-behavior.gif" width = "360" height = "640" alt="图片名称" align=center /></p></p>
             <p class="article-more-link">
                 <a href="/Custom-Behavior-to-fast-back.html#more">查看更多</a>
             </p>
