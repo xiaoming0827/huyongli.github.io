@@ -258,6 +258,8 @@ var _hmt = _hmt || [];
             <p>今天用<code>RecyclerView</code>写了简单的例子，使用的是<code>LinearLyaoutManager</code>，子<code>View</code>采用的<code>TextView</code>，准备写个简单的List展示，我的<code>RecyclerView</code>和<code>TextView</code>的宽度布局都采用的是<code>match_parent</code>，结果显示出来之后发现子<code>View</code>的宽度压根就没有充满屏幕。之前也用过<code>RecyclerView</code>，但是没有遇到过这个问题，很不解啊~~~网上查阅之后说是在<code>Adapter</code>的<code>onCreateViewHolder</code>方法中构造<code>View</code>的时候不能用如下方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">View.inflate(mContext, R.layout.item_layout, <span class="keyword">null</span>);</div></pre></td></tr></table></figure></p>
 <p>必须要换成下面的构造方式把parent带进去：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, <span class="keyword">false</span>);</div></pre></td></tr></table></figure></p>
 <p>而我的<code>Adapter</code>中刚好就使用的是第一种方式，于是立马换成下面的第二种方式实现，运行看效果，果然充满了屏幕~~~这个问题还真是奇葩啊~<br><a id="more"></a></p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
 
         
         </div>
