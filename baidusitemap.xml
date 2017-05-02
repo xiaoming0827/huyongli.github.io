@@ -4,6 +4,54 @@
 
     
   <url>
+    <loc>http://ittiger.cn/MediaBrowserService.html</loc>
+    <lastmod>2017-05-02T03:27:43.789Z</lastmod>
+    <data>
+        <display>
+        <title>关于媒体浏览器服务(MediaBrowserService)</title>
+        <pubTime>2017-04-30T13:45:04.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>MediaBrowserService</tag>
+         
+        <tag>MediaControllerCompat</tag>
+         
+         
+           
+             
+              <breadCrumb title="Media Apps" url="http://ittiger.cn/categories/Media-Apps/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ittiger.cn/Behavior-UC-Main-Page.html</loc>
+    <lastmod>2017-03-31T11:59:28.893Z</lastmod>
+    <data>
+        <display>
+        <title>Behavior-UC-Main-Page</title>
+        <pubTime>2017-03-30T14:34:05.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Behavior</tag>
+         
+        <tag>Material Design</tag>
+         
+         
+           
+             
+              <breadCrumb title="Material Design" url="http://ittiger.cn/categories/Material-Design/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://ittiger.cn/Header-Footer-scroll-hide.html</loc>
     <lastmod>2017-03-09T08:47:17.600Z</lastmod>
     <data>
@@ -910,28 +958,6 @@
 
     
   <url>
-    <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8BTableLayout%E4%B8%ADTextView%E6%96%87%E6%9C%AC%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C.html</loc>
-    <lastmod>2016-07-29T01:19:10.922Z</lastmod>
-    <data>
-        <display>
-        <title>Android基础之TableLayout中TextView文本无法自动换行</title>
-        <pubTime>2015-10-22T14:43:39.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>TableLayout</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://ittiger.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8BActivity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.html</loc>
     <lastmod>2016-07-29T01:19:10.922Z</lastmod>
     <data>
@@ -944,6 +970,28 @@
         <tag>Activity</tag>
          
         <tag>生命周期</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://ittiger.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ittiger.cn/Android%E5%9F%BA%E7%A1%80%E4%B9%8BTableLayout%E4%B8%ADTextView%E6%96%87%E6%9C%AC%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C.html</loc>
+    <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+    <data>
+        <display>
+        <title>Android基础之TableLayout中TextView文本无法自动换行</title>
+        <pubTime>2015-10-22T14:43:39.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>TableLayout</tag>
          
          
            

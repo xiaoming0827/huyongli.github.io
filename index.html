@@ -168,11 +168,11 @@ var _hmt = _hmt || [];
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                43
+                45
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                42
+                44
                 <span>标签</span>
             </div>
         </div>
@@ -209,6 +209,236 @@ var _hmt = _hmt || [];
 
             
             <section id="main">
+    <article id="post-MediaBrowserService" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/MediaBrowserService.html">关于媒体浏览器服务(MediaBrowserService)</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/MediaBrowserService.html">
+            <time datetime="2017-04-30T13:45:04.000Z" itemprop="datePublished">2017-04-30</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Media-Apps/">Media Apps</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/MediaBrowserService/">MediaBrowserService</a>, <a class="tag-link" href="/tags/MediaControllerCompat/">MediaControllerCompat</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>今天说的这个主题与媒体播放有关，尤其是音乐播放，说到音乐播放大家应该都用过音乐App。<br>通常一个音乐App的实现主要涉及如下几点：</p>
+<ol>
+<li>从服务器获取音乐数据</li>
+<li>播放音乐时播放器的各种播放状态以及不同状态下的UI展示</li>
+<li>播放过程中通过UI界面控制播放器的各种状态</li>
+<li>UI控制如何与播放服务进行关联并进行状态同步</li>
+<li>如何保证后台播放过程中播放服务不被杀死</li>
+</ol>
+<p>对于上面的这几点，其实<code>Android</code>已经为我们提供了一套完整的解决方案，它已经很好的将这些操作进行了封装，我们只需要关注数据的获取和歌曲的播放即可。<code>Android</code>提供的这套API在<code>support-v4</code>中提供了兼容版本，因此在使用的过程中最好使用该版本以兼容低版本系统。</p>
+<p>关键类主要有如下几个：</p>
+<ol>
+<li><code>MediaBrowserServiceCompat</code> 媒体浏览器服务</li>
+<li><code>MediaBrowserCompat</code> 媒体浏览器</li>
+<li><code>MediaControllerCompat</code> 媒体控制器</li>
+<li><code>MediaSessionCompat</code> 媒体会话<br>我们一个个来说。</li>
+</ol></p>
+            <p class="article-more-link">
+                <a href="/MediaBrowserService.html#more">查看更多</a>
+            </p>
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/MediaBrowserService.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/MediaBrowserService.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-Behavior-UC-Main-Page" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/Behavior-UC-Main-Page.html">Behavior-UC-Main-Page</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Behavior-UC-Main-Page.html">
+            <time datetime="2017-03-30T14:34:05.000Z" itemprop="datePublished">2017-03-30</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Material-Design/">Material Design</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Behavior/">Behavior</a>, <a class="tag-link" href="/tags/Material-Design/">Material Design</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>老规矩，还是先上效果图<br><img src="/img/material-design/uc-main-view-behavior.gif" width = "360" height = "640" alt="图片名称" align=center /></p>
+<p><a href="https://github.com/huyongli/UCMainViewForBehavior">github地址</a></p></p>
+            <p class="article-more-link">
+                <a href="/Behavior-UC-Main-Page.html#more">查看更多</a>
+            </p>
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/Behavior-UC-Main-Page.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/Behavior-UC-Main-Page.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-Header-Footer-scroll-hide" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1092,223 +1322,6 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
 
 
 
-    <article id="post-Retrofit-Source-Design-Pattern" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/Retrofit-Source-Design-Pattern.html">透过Retrofit使用看其源码设计模式</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/Retrofit-Source-Design-Pattern.html">
-            <time datetime="2016-10-13T08:43:42.000Z" itemprop="datePublished">2016-10-13</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/Retrofit/">Retrofit</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章我将从Retrofit的基本用法出发，透过其使用步骤，一步步的探究Retrofit的实现原理及其源码的设计模式。这篇文章可能会将Retrofit中用到的设计模式和其实现原理穿插着写，所以各位同学也可以选择性的阅读。而对于Retrofit具体使用还不太清楚的同学可以去看的另一篇文章<a href="http://ittiger.cn/2016/08/29/Retrofit2%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D/">Retrofit2的使用介绍</a></p></p>
-            <p class="article-more-link">
-                <a href="/Retrofit-Source-Design-Pattern.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/Retrofit-Source-Design-Pattern.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/Retrofit-Source-Design-Pattern.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-在线视频播放App的实现" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/在线视频播放App的实现.html">在线视频播放App的实现</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/在线视频播放App的实现.html">
-            <time datetime="2016-09-28T03:56:22.000Z" itemprop="datePublished">2016-09-28</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>前一段时间在公司项目上做了一个视频播放的功能，当时时间紧，做完之后感觉有些地方处理的不好，所以就基于当时实现的思路进行了一些改进，加上自己平时喜欢看新闻客户端里面的一些短视频，所以就用网易等客户端的视频数据完成了一个独立的视频播放APP，顺便巩固下其他的技术。</p>
-<h2 id="主要使用的开源库"><a href="#主要使用的开源库" class="headerlink" title="主要使用的开源库"></a>主要使用的开源库</h2><p>Mosby(一个MVP框架)、RxJava、Retrofit2、ButterKnife、Glide、Systembartint、TigerDB、Material Design相关控件</p>
-<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ol>
-<li>列表中播放视频</li>
-<li>列表滑动时如果正在播放视频，则列表中播放的视频自动切换为小窗口浮动播放</li>
-<li>列表播放切换到全屏播放模式</li>
-<li>视频播放时也添加了完整的暂停、播放等控制操作，也添加了视频播放进度，视频缓冲进度等显示功能</li>
-<li>视频全屏播放时支持左右滑动实现视频的快进和后退，支持右边上下滑动调整播放音量，左边上下滑动调整播放器的亮度等手势控制操作  </li>
-</ol></p>
-            <p class="article-more-link">
-                <a href="/在线视频播放App的实现.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/在线视频播放App的实现.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/在线视频播放App的实现.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
     </nav>
@@ -1321,6 +1334,24 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Media-Apps/">Media Apps</a></p>
+                            <p class="item-title"><a href="/MediaBrowserService.html" class="title">关于媒体浏览器服务(MediaBrowserService)</a></p>
+                            <p class="item-date"><time datetime="2017-04-30T13:45:04.000Z" itemprop="datePublished">2017-04-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Material-Design/">Material Design</a></p>
+                            <p class="item-title"><a href="/Behavior-UC-Main-Page.html" class="title">Behavior-UC-Main-Page</a></p>
+                            <p class="item-date"><time datetime="2017-03-30T14:34:05.000Z" itemprop="datePublished">2017-03-30</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1349,24 +1380,6 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
-                            <p class="item-title"><a href="/Android-resources-adapter.html" class="title">Android资源应用与适配标准</a></p>
-                            <p class="item-date"><time datetime="2016-11-19T07:28:31.000Z" itemprop="datePublished">2016-11-19</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
-                            <p class="item-title"><a href="/Nine-Patch-Affect-Padding-Principle.html" class="title">Android基础之9-Patch(9.PNG)与padding</a></p>
-                            <p class="item-date"><time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1376,7 +1389,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Material-Design/">Material Design</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Material-Design/">Material Design</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Media-Apps/">Media Apps</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1385,7 +1398,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1394,7 +1407,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 12px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/Material-Design/" style="font-size: 12px;">Material Design</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 14px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/Material-Design/" style="font-size: 14px;">Material Design</a> <a href="/tags/MediaBrowserService/" style="font-size: 10px;">MediaBrowserService</a> <a href="/tags/MediaControllerCompat/" style="font-size: 10px;">MediaControllerCompat</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
         </div>
     </div>
 

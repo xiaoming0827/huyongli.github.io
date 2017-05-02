@@ -43,7 +43,14 @@
 
     <url>
         <loc>http://ittiger.cn/categories/Material-Design/</loc>
-        <lastmod>2017-03-09T08:47:17.600Z</lastmod>
+        <lastmod>2017-03-31T11:59:28.893Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/categories/Media-Apps/</loc>
+        <lastmod>2017-05-02T03:27:43.789Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
