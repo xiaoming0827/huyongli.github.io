@@ -35,13 +35,6 @@
     </url>
 
     <url>
-        <loc>http://ittiger.cn/categories/Android/</loc>
-        <lastmod>2017-02-28T03:04:29.662Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://ittiger.cn/categories/Material-Design/</loc>
         <lastmod>2017-03-31T11:59:28.893Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -51,6 +44,20 @@
     <url>
         <loc>http://ittiger.cn/categories/Media-Apps/</loc>
         <lastmod>2017-05-02T03:27:43.789Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/categories/Android/</loc>
+        <lastmod>2017-07-17T10:06:06.190Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+        <lastmod>2017-07-17T10:06:27.872Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

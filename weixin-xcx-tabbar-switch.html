@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>微信小程序之Tab切换 | 老胡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="做过android的都知道在android里面实现Tab切换非常简单，使用android提供的TabLayout+ViewPager很容器就实现了Tab切换的效果。
+但是小程序中是没有提供类似可以直接使用的组件，因此想要实现此功能需要我们自己去编码实现。在上一篇文章中我提到的小程序练手项目就实现了Tab切换效果，具体效果图可以参考文章微信小程序入门项目。
+实现思路翻看小程序的文档可以发现，微信为我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序之Tab切换">
+<meta property="og:url" content="http://ittiger.cn/weixin-xcx-tabbar-switch.html">
+<meta property="og:site_name" content="老胡">
+<meta property="og:description" content="做过android的都知道在android里面实现Tab切换非常简单，使用android提供的TabLayout+ViewPager很容器就实现了Tab切换的效果。
+但是小程序中是没有提供类似可以直接使用的组件，因此想要实现此功能需要我们自己去编码实现。在上一篇文章中我提到的小程序练手项目就实现了Tab切换效果，具体效果图可以参考文章微信小程序入门项目。
+实现思路翻看小程序的文档可以发现，微信为我">
+<meta property="og:updated_time" content="2017-07-17T10:06:12.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序之Tab切换">
+<meta name="twitter:description" content="做过android的都知道在android里面实现Tab切换非常简单，使用android提供的TabLayout+ViewPager很容器就实现了Tab切换的效果。
+但是小程序中是没有提供类似可以直接使用的组件，因此想要实现此功能需要我们自己去编码实现。在上一篇文章中我提到的小程序练手项目就实现了Tab切换效果，具体效果图可以参考文章微信小程序入门项目。
+实现思路翻看小程序的文档可以发现，微信为我">
+    
+
+    
+        <link rel="alternate" href="atom.xml" title="老胡" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5e886c0a11c8dce0abbe888faadd1000";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">老胡</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+                    <a class="main-nav-link" href="/website">干货</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                    <td><a class="main-nav-link" href="/website">干货</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">老胡</h2>
+            <h3 id="title">Android Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>WuHan, China</span>
+            <a id="follow" target="_blank" href="https://github.com/huyongli/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                49
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                47
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/huyongli" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/aclaohu" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-weixin-xcx-tabbar-switch" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            微信小程序之Tab切换
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/weixin-xcx-tabbar-switch.html">
+            <time datetime="2017-07-17T09:44:58.000Z" itemprop="datePublished">2017-07-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/小程序/">小程序</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/小程序/">小程序</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>做过<code>android</code>的都知道在<code>android</code>里面实现<code>Tab切换</code>非常简单，使用<code>android</code>提供的<code>TabLayout+ViewPager</code>很容器就实现了<code>Tab切换</code>的效果。</p>
+<p>但是小程序中是没有提供类似可以直接使用的组件，因此想要实现此功能需要我们自己去编码实现。在<a href="http://ittiger.cn/weixin-xcx-first-project.html">上一篇</a>文章中我提到的小程序练手项目就实现了<code>Tab切换</code>效果，具体效果图可以参考文章<a href="http://ittiger.cn/weixin-xcx-first-project.html">微信小程序入门项目</a>。</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>翻看小程序的文档可以发现，微信为我们提供了一个<code>swiper</code>组件，通过该组件可以实现<code>view</code>的滑动切换，它的功能与<code>android</code>中的<code>ViewPager</code>是类似的。因此实现<code>Tab切换</code>现在只需要实现头部的<code>Tabbar</code>即可，对于该功能我们可以采用多个横向排列的<code>view</code>组件构成一个<code>Tabbar</code>，每个<code>view</code>组件作为一个<code>Tab</code>项，然后再将其点击事件与<code>swiper</code>进行关联即可实现<code>Tab</code>的点击和滑动切换功能。而对于<code>Tabbar</code>的当前<code>Tab</code>项下面的指示器我们可以采用<code>border-bottom</code>样式实现，也可以单独使用一个<code>view</code>组件作为指示器，我这里采用的是第二种方式实现指示器。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>实现代码如下：</p>
+<h4 id="页面布局代码"><a href="#页面布局代码" class="headerlink" title="页面布局代码"></a>页面布局代码</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"page"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;tabs&#125;&#125;"</span> <span class="attr">wx:key</span>=<span class="string">"*this"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">view</span> <span class="attr">id</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"navbar__item &#123;&#123;activeIndex == index ? 'navbar__item_on' : ''&#125;&#125;"</span> <span class="attr">bindtap</span>=<span class="string">"navTabClick"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar__title"</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">block</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar__slider"</span> <span class="attr">style</span>=<span class="string">"width: &#123;&#123;sliderWidth&#125;&#125;px; transform: translateX(&#123;&#123;sliderOffset&#125;&#125;px); -webkit-transform: translateX(&#123;&#123;sliderOffset&#125;&#125;px);"</span>&gt;</span><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">"position: absolute;top: 68rpx;width: 100%;height:&#123;&#123;contentHeight&#125;&#125;px"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">swiper</span> <span class="attr">current</span>=<span class="string">"&#123;&#123;activeIndex&#125;&#125;"</span> <span class="attr">duration</span>=<span class="string">"300"</span> <span class="attr">bindchange</span>=<span class="string">"bindChange"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>热门视频<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>比赛集锦<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>你懂专栏<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>天下足球<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">swiper</span>&gt;</span> </div><div class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="布局样式代码"><a href="#布局样式代码" class="headerlink" title="布局样式代码"></a>布局样式代码</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">view , page &#123;</div><div class="line">  padding: 0px;</div><div class="line">  margin: 0px;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.page &#123;</div><div class="line">  height: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar &#123;</div><div class="line">    display: flex;</div><div class="line">    position: absolute;</div><div class="line">    z-index: 500;</div><div class="line">    top: 0;</div><div class="line">    width: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__item &#123;</div><div class="line">    position: relative;</div><div class="line">    display: block;</div><div class="line">    flex: 1;</div><div class="line">    padding: 10rpx 0;</div><div class="line">    text-align: center;</div><div class="line">    font-size: 0;</div><div class="line">    height: 48rpx;</div><div class="line">    line-height: 48rpx;</div><div class="line">    &lt;!-- NavBar的总高度为：height + padding-top + padding-bottom = 68rpx --&gt;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__item_on &#123;</div><div class="line">    color: #16B13A;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__slider &#123;</div><div class="line">    position: absolute;</div><div class="line">    display: block;</div><div class="line">    content: " ";</div><div class="line">    left: 0;</div><div class="line">    bottom: 0;</div><div class="line">    height: 3px;</div><div class="line">    background-color: #16B13A;</div><div class="line">    transition: transform .3s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__title&#123;</div><div class="line">    display: inline-block;</div><div class="line">    font-size: 15px;</div><div class="line">    max-width: 8em;</div><div class="line">    text-align: center;</div><div class="line">&#125;</div><div class="line"></div><div class="line">swiper &#123;</div><div class="line">  height: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">swiper-item&#123;</div><div class="line">  width: 100%;</div><div class="line">  padding-top: 20rpx;</div><div class="line">  text-align: center;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="js代码"><a href="#js代码" class="headerlink" title="js代码"></a>js代码</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tabs = [</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"热门视频"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"比赛集锦"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"你懂专栏"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"天下足球"</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line">Page(&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 页面的初始数据</div><div class="line">   */</div><div class="line">  data: &#123;</div><div class="line">    tabs: tabs,     <span class="comment">//展示的数据</span></div><div class="line">    slideOffset: <span class="number">0</span>,<span class="comment">//指示器每次移动的距离</span></div><div class="line">    activeIndex: <span class="number">0</span>,<span class="comment">//当前展示的Tab项索引</span></div><div class="line">    sliderWidth: <span class="number">96</span>,<span class="comment">//指示器的宽度,计算得到</span></div><div class="line">    contentHeight: <span class="number">0</span><span class="comment">//页面除去头部Tabbar后，内容区的总高度，计算得到</span></div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 生命周期函数--监听页面加载</div><div class="line">   */</div><div class="line">  onLoad: <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</div><div class="line">    wx.getSystemInfo(&#123;</div><div class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">        that.setData(&#123;</div><div class="line">        <span class="comment">//计算相关宽度</span></div><div class="line">          sliderWidth: res.windowWidth / that.data.tabs.length,</div><div class="line">          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex,</div><div class="line">          contentHeight: res.windowHeight - res.windowWidth / <span class="number">750</span> * <span class="number">68</span><span class="comment">//计算内容区高度，rpx -&gt; px计算</span></div><div class="line">        &#125;);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  bindChange: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> current = e.detail.current;</div><div class="line">    <span class="keyword">this</span>.setData(&#123;</div><div class="line">      activeIndex: current,</div><div class="line">      sliderOffset: <span class="keyword">this</span>.data.sliderWidth * current</div><div class="line">    &#125;);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"bindChange:"</span> + current);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  navTabClick: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.setData(&#123;</div><div class="line">      sliderOffset: e.currentTarget.offsetLeft,</div><div class="line">      activeIndex: e.currentTarget.id</div><div class="line">    &#125;);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"navTabClick:"</span> + e.currentTarget.id);</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>上面的布局代码和js代码其实写起来都不难，关键在于css样式的编写，对于不熟悉CSS的人来说调样式太痛苦了。这个效果也是我调了好半天，参考了好多代码之后写出来的，真o(╯□╰)o，看来想写好小程序还得好好学学CSS样式。</p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/weixin-xcx-tabbar-switch.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/weixin-xcx-tabbar-switch.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/weixin-xcx-data-binding-and-params-transfer.html" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    微信小程序之页面数据绑定及页面跳转传参
+                
+            </div>
+        </a>
+    
+    
+        <a href="/weixin-xcx-first-project.html" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">微信小程序之入门项目</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="weixin-xcx-tabbar-switch.html" data-title="微信小程序之Tab切换" data-url="http://ittiger.cn/weixin-xcx-tabbar-switch.html"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-data-binding-and-params-transfer.html" class="title">微信小程序之页面数据绑定及页面跳转传参</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:50:02.000Z" itemprop="datePublished">2017-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-tabbar-switch.html" class="title">微信小程序之Tab切换</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:44:58.000Z" itemprop="datePublished">2017-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-first-project.html" class="title">微信小程序之入门项目</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:40:39.000Z" itemprop="datePublished">2017-07-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
+                            <p class="item-title"><a href="/TextSwitcher-ViewSwitcher.html" class="title">TextSwitcher与ViewSwitcher学习笔记</a></p>
+                            <p class="item-date"><time datetime="2017-07-12T09:36:51.000Z" itemprop="datePublished">2017-07-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Media-Apps/">Media Apps</a></p>
+                            <p class="item-title"><a href="/MediaBrowserService.html" class="title">关于媒体浏览器服务(MediaBrowserService)</a></p>
+                            <p class="item-date"><time datetime="2017-04-30T13:45:04.000Z" itemprop="datePublished">2017-04-30</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Material-Design/">Material Design</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Media-Apps/">Media Apps</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/小程序/">小程序</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 14px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/Material-Design/" style="font-size: 14px;">Material Design</a> <a href="/tags/MediaBrowserService/" style="font-size: 10px;">MediaBrowserService</a> <a href="/tags/MediaControllerCompat/" style="font-size: 10px;">MediaControllerCompat</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextSwitcher/" style="font-size: 10px;">TextSwitcher</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/ViewSwitcher/" style="font-size: 10px;">ViewSwitcher</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/小程序/" style="font-size: 14px;">小程序</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://ashui.site/" rel="external nofollow">番羽土啬</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 老胡<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'ittiger'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

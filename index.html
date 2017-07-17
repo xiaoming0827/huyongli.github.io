@@ -168,11 +168,11 @@ var _hmt = _hmt || [];
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                45
+                49
                 <span>文章</span>
             </div>
             <div class="article-info-block">
-                44
+                47
                 <span>标签</span>
             </div>
         </div>
@@ -209,6 +209,914 @@ var _hmt = _hmt || [];
 
             
             <section id="main">
+    <article id="post-weixin-xcx-data-binding-and-params-transfer" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/weixin-xcx-data-binding-and-params-transfer.html">微信小程序之页面数据绑定及页面跳转传参</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/weixin-xcx-data-binding-and-params-transfer.html">
+            <time datetime="2017-07-17T09:50:02.000Z" itemprop="datePublished">2017-07-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/小程序/">小程序</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/小程序/">小程序</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>在写前面的小程序入门项目时，发现有两个很常用而且觉得也算比较重要的知识点，这里记录下：</p>
+<h3 id="页面数据绑定"><a href="#页面数据绑定" class="headerlink" title="页面数据绑定"></a>页面数据绑定</h3><p>比如你的页面需要显示一个<code>Hello</code>字符串，这个这个字符串可能会根据某些情况会动态变化，这个时候就需要进行数据绑定展示了</p>
+<p>在wxml文件布局如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span>&#123;&#123;message&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>在js中设置好变量如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">	data: &#123;</div><div class="line">		message: <span class="string">"Hello"</span>,</div><div class="line">		number: <span class="number">1</span></div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>就这样data里面的message属性就可以通过view组件展示出来了，看了上面的写法，也很容易明白，组件展示数据信息时是通过<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123;属性名称&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>这的写法与data里面的属性进行绑定的。</p>
+<p>如果在数据信息展示出来后，后面要更新这个属性信息的展示的话，就不能简单的通过<code>this.data.message=&quot;Hello World&quot;来实现，因为这样是无法达到改变数据信息的目的的。小程序中改变数据信息要求使用函数</code>setData()<code>函数来实现。例如上面我们修改</code>message`的值的话需要进行如下操作：</p>
+<!--mroe-->
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.setData(&#123;</div><div class="line">	message: <span class="string">"Hello World"</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>通过该函数更新之后，页面上会自动的更新展示，而不需要我们去进行额外的操作，微信将数据的展示与更新进行了分离，只要你使用特定的方法修改属性值，界面就会自动更新，这样的实方式比起android中的手动通知更新要方便很多</p>
+<h3 id="页面跳转参数"><a href="#页面跳转参数" class="headerlink" title="页面跳转参数"></a>页面跳转参数</h3><p>小程序中从一个页面跳转到另外一个页面有几种方式，这里我以<code>wx.navigateTo()</code>跳转进行说明：<br>我从<code>index</code>页面跳转到<code>logs</code>页面，很简单</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wx.navigateTo(&#123;</div><div class="line">	url: '../log/logs</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>那如果我在跳转的同时要向<code>logs</code>页面传递参数该怎么办呢，也很简单，直接在url后拼接相关参数即可(与http中的get请求的传参方式是一样的)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wx.navigateTo(&#123;</div><div class="line">	url: <span class="string">'../video/video?message='</span> + <span class="keyword">this</span>.data.message + <span class="string">"&amp;number="</span> + <span class="keyword">this</span>.data.number</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>参数是传过去了，那在<code>logs</code>页面中该如何获取这些参数呢？其实也很简单：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">onLoad: <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> message = options.message;</div><div class="line">	<span class="keyword">var</span> number = options.number;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如上所示，我们在新页面的<code>onLoad</code>函数中就可以直接获取到传递过来的参数信息。</p>
+<h3 id="点击View传参"><a href="#点击View传参" class="headerlink" title="点击View传参"></a>点击View传参</h3><p>在我前面的文章<a href="http://ittiger.cn/weixin-xcx-first-project.html"> 微信小程序之入门项目</a>中点击视频列表中的某一项跳转到视频播放页面，而在点击列表中的某一项时，需要获取当前项的数据信息，如果我想通过点击事件就将这些数据信息作为参数传递过去该怎么做呢？代码如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;tab.videos&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"video"</span> <span class="attr">data-video</span>=<span class="string">"&#123;&#123;video&#125;&#125;"</span> <span class="attr">wx:key</span>=<span class="string">"*this"</span> <span class="attr">bindtap</span>=<span class="string">"onItemClick"</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>上面的代码通过for循环实现了一个列表，并为每一项绑定了点击事件，而<code>view</code>组件实现中有一个属性是微信没有提供的：<code>data-video</code>，这个属性是我们手动添加上去的，微信中如果要在wxml中传递参数到点击事件中的话则可以通过<code>data-**</code>的形式进行传参(**号即为参数名称)，此处是将每一项数据<code>video</code>作为参数进行传递，同时参数名称为<code>video</code></p>
+<p>接下来再来看看点击事件中如何获取该<code>video</code>信息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">onItemClick: <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> video = event.currentTarget.dataset.video;</div><div class="line">    <span class="keyword">var</span> url = video.url;</div><div class="line">    <span class="keyword">var</span> title = video.title;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>没错，就像代码中写的，在点击事件中我们可以通过<code>event.currentTarget.dataset</code>获取传过来的<code>video</code>信息，这个参数在调试的时候也是可以通过event对象看到的</p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/weixin-xcx-data-binding-and-params-transfer.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/weixin-xcx-data-binding-and-params-transfer.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-weixin-xcx-tabbar-switch" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/weixin-xcx-tabbar-switch.html">微信小程序之Tab切换</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/weixin-xcx-tabbar-switch.html">
+            <time datetime="2017-07-17T09:44:58.000Z" itemprop="datePublished">2017-07-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/小程序/">小程序</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/小程序/">小程序</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>做过<code>android</code>的都知道在<code>android</code>里面实现<code>Tab切换</code>非常简单，使用<code>android</code>提供的<code>TabLayout+ViewPager</code>很容器就实现了<code>Tab切换</code>的效果。</p>
+<p>但是小程序中是没有提供类似可以直接使用的组件，因此想要实现此功能需要我们自己去编码实现。在<a href="http://ittiger.cn/weixin-xcx-first-project.html">上一篇</a>文章中我提到的小程序练手项目就实现了<code>Tab切换</code>效果，具体效果图可以参考文章<a href="http://ittiger.cn/weixin-xcx-first-project.html">微信小程序入门项目</a>。</p>
+<h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>翻看小程序的文档可以发现，微信为我们提供了一个<code>swiper</code>组件，通过该组件可以实现<code>view</code>的滑动切换，它的功能与<code>android</code>中的<code>ViewPager</code>是类似的。因此实现<code>Tab切换</code>现在只需要实现头部的<code>Tabbar</code>即可，对于该功能我们可以采用多个横向排列的<code>view</code>组件构成一个<code>Tabbar</code>，每个<code>view</code>组件作为一个<code>Tab</code>项，然后再将其点击事件与<code>swiper</code>进行关联即可实现<code>Tab</code>的点击和滑动切换功能。而对于<code>Tabbar</code>的当前<code>Tab</code>项下面的指示器我们可以采用<code>border-bottom</code>样式实现，也可以单独使用一个<code>view</code>组件作为指示器，我这里采用的是第二种方式实现指示器。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>实现代码如下：</p>
+<h4 id="页面布局代码"><a href="#页面布局代码" class="headerlink" title="页面布局代码"></a>页面布局代码</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"page"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;tabs&#125;&#125;"</span> <span class="attr">wx:key</span>=<span class="string">"*this"</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">view</span> <span class="attr">id</span>=<span class="string">"&#123;&#123;index&#125;&#125;"</span> <span class="attr">class</span>=<span class="string">"navbar__item &#123;&#123;activeIndex == index ? 'navbar__item_on' : ''&#125;&#125;"</span> <span class="attr">bindtap</span>=<span class="string">"navTabClick"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar__title"</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">block</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"navbar__slider"</span> <span class="attr">style</span>=<span class="string">"width: &#123;&#123;sliderWidth&#125;&#125;px; transform: translateX(&#123;&#123;sliderOffset&#125;&#125;px); -webkit-transform: translateX(&#123;&#123;sliderOffset&#125;&#125;px);"</span>&gt;</span><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">style</span>=<span class="string">"position: absolute;top: 68rpx;width: 100%;height:&#123;&#123;contentHeight&#125;&#125;px"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">swiper</span> <span class="attr">current</span>=<span class="string">"&#123;&#123;activeIndex&#125;&#125;"</span> <span class="attr">duration</span>=<span class="string">"300"</span> <span class="attr">bindchange</span>=<span class="string">"bindChange"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>热门视频<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>比赛集锦<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>你懂专栏<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">swiper-item</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">view</span>&gt;</span>天下足球<span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">swiper</span>&gt;</span> </div><div class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="布局样式代码"><a href="#布局样式代码" class="headerlink" title="布局样式代码"></a>布局样式代码</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">view , page &#123;</div><div class="line">  padding: 0px;</div><div class="line">  margin: 0px;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.page &#123;</div><div class="line">  height: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar &#123;</div><div class="line">    display: flex;</div><div class="line">    position: absolute;</div><div class="line">    z-index: 500;</div><div class="line">    top: 0;</div><div class="line">    width: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__item &#123;</div><div class="line">    position: relative;</div><div class="line">    display: block;</div><div class="line">    flex: 1;</div><div class="line">    padding: 10rpx 0;</div><div class="line">    text-align: center;</div><div class="line">    font-size: 0;</div><div class="line">    height: 48rpx;</div><div class="line">    line-height: 48rpx;</div><div class="line">    &lt;!-- NavBar的总高度为：height + padding-top + padding-bottom = 68rpx --&gt;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__item_on &#123;</div><div class="line">    color: #16B13A;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__slider &#123;</div><div class="line">    position: absolute;</div><div class="line">    display: block;</div><div class="line">    content: " ";</div><div class="line">    left: 0;</div><div class="line">    bottom: 0;</div><div class="line">    height: 3px;</div><div class="line">    background-color: #16B13A;</div><div class="line">    transition: transform .3s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.navbar__title&#123;</div><div class="line">    display: inline-block;</div><div class="line">    font-size: 15px;</div><div class="line">    max-width: 8em;</div><div class="line">    text-align: center;</div><div class="line">&#125;</div><div class="line"></div><div class="line">swiper &#123;</div><div class="line">  height: 100%;</div><div class="line">&#125;</div><div class="line"></div><div class="line">swiper-item&#123;</div><div class="line">  width: 100%;</div><div class="line">  padding-top: 20rpx;</div><div class="line">  text-align: center;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="js代码"><a href="#js代码" class="headerlink" title="js代码"></a>js代码</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tabs = [</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"热门视频"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"比赛集锦"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"你懂专栏"</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    name: <span class="string">"天下足球"</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line">Page(&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 页面的初始数据</div><div class="line">   */</div><div class="line">  data: &#123;</div><div class="line">    tabs: tabs,     <span class="comment">//展示的数据</span></div><div class="line">    slideOffset: <span class="number">0</span>,<span class="comment">//指示器每次移动的距离</span></div><div class="line">    activeIndex: <span class="number">0</span>,<span class="comment">//当前展示的Tab项索引</span></div><div class="line">    sliderWidth: <span class="number">96</span>,<span class="comment">//指示器的宽度,计算得到</span></div><div class="line">    contentHeight: <span class="number">0</span><span class="comment">//页面除去头部Tabbar后，内容区的总高度，计算得到</span></div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * 生命周期函数--监听页面加载</div><div class="line">   */</div><div class="line">  onLoad: <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</div><div class="line">    wx.getSystemInfo(&#123;</div><div class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</div><div class="line">        that.setData(&#123;</div><div class="line">        <span class="comment">//计算相关宽度</span></div><div class="line">          sliderWidth: res.windowWidth / that.data.tabs.length,</div><div class="line">          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex,</div><div class="line">          contentHeight: res.windowHeight - res.windowWidth / <span class="number">750</span> * <span class="number">68</span><span class="comment">//计算内容区高度，rpx -&gt; px计算</span></div><div class="line">        &#125;);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  bindChange: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> current = e.detail.current;</div><div class="line">    <span class="keyword">this</span>.setData(&#123;</div><div class="line">      activeIndex: current,</div><div class="line">      sliderOffset: <span class="keyword">this</span>.data.sliderWidth * current</div><div class="line">    &#125;);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"bindChange:"</span> + current);</div><div class="line">  &#125;,</div><div class="line"></div><div class="line">  navTabClick: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.setData(&#123;</div><div class="line">      sliderOffset: e.currentTarget.offsetLeft,</div><div class="line">      activeIndex: e.currentTarget.id</div><div class="line">    &#125;);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"navTabClick:"</span> + e.currentTarget.id);</div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>上面的布局代码和js代码其实写起来都不难，关键在于css样式的编写，对于不熟悉CSS的人来说调样式太痛苦了。这个效果也是我调了好半天，参考了好多代码之后写出来的，真o(╯□╰)o，看来想写好小程序还得好好学学CSS样式。</p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/weixin-xcx-tabbar-switch.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/weixin-xcx-tabbar-switch.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-weixin-xcx-first-project" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/weixin-xcx-first-project.html">微信小程序之入门项目</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/weixin-xcx-first-project.html">
+            <time datetime="2017-07-17T09:40:39.000Z" itemprop="datePublished">2017-07-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/小程序/">小程序</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/小程序/">小程序</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>最近在学习微信小程序，尝试着写了一个足球视频播放的小程序，先放效果截图吧</p>
+<p><img src="/img/weixin-xcx/1.jpg" width="400"></p>
+<p><img src="/img/weixin-xcx/2.jpg" width="400"></p>
+<p><img src="/img/weixin-xcx/3.jpg" width="400"></p>
+<hr>
+<p>通过这个小程序的练习熟悉小程序中网络加载，页面编写和配置，页面跳转及传参，页面展示时的数据绑定以及独立模块的引用等知识点。</p>
+<p>当然写小程序最重要的一点是必须要熟悉CSS样式的编写，对于我这种对CSS不熟的人来说真是太困难了。一个界面效果都需要调上半天。</p>
+<p>项目代码地址如下：<br><a href="https://github.com/huyongli/WXSoccerVideo" target="_blank" rel="external">https://github.com/huyongli/WXSoccerVideo</a></p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/weixin-xcx-first-project.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/weixin-xcx-first-project.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-TextSwitcher-ViewSwitcher" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/TextSwitcher-ViewSwitcher.html">TextSwitcher与ViewSwitcher学习笔记</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/TextSwitcher-ViewSwitcher.html">
+            <time datetime="2017-07-12T09:36:51.000Z" itemprop="datePublished">2017-07-12</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/TextSwitcher/">TextSwitcher</a>, <a class="tag-link" href="/tags/ViewSwitcher/">ViewSwitcher</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p><code>TextSwitcher</code>和<code>ViewSwitcher</code>是什么，有什么用呢？</p>
+<p>其实大家从名字就可以看出来其大概意思，<code>TextSwitcher</code>是用来切换文本显示的，而<code>ViewSwitcher</code>是用来切换视图显示的，实际上他们也的确是用来做这个的，只不过他们在切换视图显示的时候允许添加切换的动画效果。<code>TextSwitcher</code>其实也是<code>ViewSwitcher</code>的子类实现。</p>
+<h3 id="TextSwitcher使用"><a href="#TextSwitcher使用" class="headerlink" title="TextSwitcher使用"></a>TextSwitcher使用</h3><p>我们先来看看<code>TextSwitcher</code>的用法：</p>
+<p>关键布局代码如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/button"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"change"</span>/&gt;</div><div class="line"><span class="tag">&lt;<span class="name">TextSwitcher</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/switcher"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>Java代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//设置显示Text文本的View创建工厂</span></div><div class="line"><span class="comment">//这是通过代码的方式创建显示文本的视图，也可以直接在布局中设置显示文本的视图，这个在讲ViewSwitcher的用法的时候再说</span></div><div class="line">mTextSwitcher.setFactory(<span class="keyword">new</span> ViewSwitcher.ViewFactory() &#123;</div><div class="line">     <span class="meta">@Override</span></div><div class="line">     <span class="function"><span class="keyword">public</span> View <span class="title">makeView</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">         TextView t = <span class="keyword">new</span> TextView(TextSwitcherActivity.<span class="keyword">this</span>);</div><div class="line">         t.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);</div><div class="line">         t.setTextAppearance(TextSwitcherActivity.<span class="keyword">this</span>, android.R.style.TextAppearance_Large);</div><div class="line">         <span class="keyword">return</span> t;</div><div class="line">     &#125;</div><div class="line"> &#125;);</div><div class="line"> Animation in = AnimationUtils.loadAnimation(<span class="keyword">this</span>,</div><div class="line">         android.R.anim.fade_in);</div><div class="line"> Animation out = AnimationUtils.loadAnimation(<span class="keyword">this</span>,</div><div class="line">         android.R.anim.fade_out);</div><div class="line"> mTextSwitcher.setInAnimation(in);<span class="comment">//设置文本出现动画</span></div><div class="line"> mTextSwitcher.setOutAnimation(out);<span class="comment">//设置文本消失动画</span></div><div class="line"> mTextSwitcher.setCurrentText(String.valueOf(mCount));<span class="comment">//设置初始值，初始值不显示动画</span></div><div class="line"> </div><div class="line"> <span class="keyword">int</span> mCount = <span class="number">0</span>;</div><div class="line"> mButton.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">	    mCount++;</div><div class="line">		mTextSwitcher.setText(String.valueOf(mCount));<span class="comment">//更新文本显示值，会出现动画     </span></div><div class="line">     &#125;</div><div class="line"> &#125;);</div></pre></td></tr></table></figure>
+<p>当你点击界面上的按钮的时候，会不断的更新<code>TextSwitcher</code>的显示值，而在更新过程中文本会出现一个淡入淡出的效果，这个效果就是通过动画产生的。</p>
+<h3 id="ViewSwitcher使用"><a href="#ViewSwitcher使用" class="headerlink" title="ViewSwitcher使用"></a>ViewSwitcher使用</h3><p>接着我们再来看看<code>ViewSwitcher</code>的使用<br>布局代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;Button</div><div class="line">    android:id=&quot;@+id/button2&quot;</div><div class="line">    android:layout_width=&quot;wrap_content&quot;</div><div class="line">    android:layout_height=&quot;wrap_content&quot;</div><div class="line">    android:layout_marginTop=&quot;20dp&quot;</div><div class="line">    android:text=&quot;change&quot;/&gt;</div><div class="line"></div><div class="line">&lt;ViewSwitcher</div><div class="line">    android:id=&quot;@+id/viewSwitcher&quot;</div><div class="line">    android:layout_width=&quot;match_parent&quot;</div><div class="line">    android:layout_height=&quot;wrap_content&quot;&gt;</div><div class="line">    &lt;ImageView</div><div class="line">        android:layout_width=&quot;300dp&quot;</div><div class="line">        android:layout_height=&quot;300dp&quot;</div><div class="line">        android:src=&quot;@drawable/image1&quot;/&gt;</div><div class="line">    &lt;ImageView</div><div class="line">        android:layout_width=&quot;300dp&quot;</div><div class="line">        android:layout_height=&quot;300dp&quot;</div><div class="line">        android:src=&quot;@drawable/image2&quot;/&gt;</div><div class="line">&lt;/ViewSwitcher&gt;</div></pre></td></tr></table></figure>
+<p>上面的布局中我们给<code>ViewSwitcher</code>添加了两个子视图，注意这里只能添加两个直接子视图，否则初始化会出现异常，至于原因后面接着说。前面说过<code>TextSwitcher</code>也可以通过布局设置文本显示视图，它的设置方式与<code>ViewSwitcher</code>其实也是一样的。</p>
+<p>ok，接着上Java代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//因为我们已经通过布局的方式设置了要切换的视图，所以就不需要再设置Factory去生成切换视图了</span></div><div class="line">Animation slide_in_left = AnimationUtils.loadAnimation(<span class="keyword">this</span>,</div><div class="line">                android.R.anim.slide_in_left);</div><div class="line">Animation slide_out_right = AnimationUtils.loadAnimation(<span class="keyword">this</span>,</div><div class="line">       android.R.anim.slide_out_right);</div><div class="line">mViewSwitcher.setInAnimation(slide_in_left);<span class="comment">//设置图片出现动画</span></div><div class="line">mViewSwitcher.setOutAnimation(slide_out_right);<span class="comment">//设置图片消失动画</span></div><div class="line">mButton2.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">		mViewSwitcher.showNext();     </div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>上面就是<code>ViewSwitcher</code>的使用方式，其实用起来还是很简单的。通过自定义动画，我们可以为两个View切换时添加更多漂亮有趣的动画效果</p>
+<h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><p>在Android开发中视图切换显示还是很常见的，比如应用加载数据时显示加载动画视图数据视图隐藏，而加载成功后加载动画视图隐藏数据视图显示，这个场景使用<code>ViewSwitcher</code>来实现应该会更简单，更方便。</p>
+<h3 id="源码探究"><a href="#源码探究" class="headerlink" title="源码探究"></a>源码探究</h3><ul>
+<li>前面说到过<code>ViewSwitcher</code>只能存在两个直接子视图，否则会初始化失败，这是为什么呢？通过源码我们可以找到答案</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public void addView(View child, int index, ViewGroup.LayoutParams params) &#123;</div><div class="line">   if (getChildCount() &gt;= 2) &#123;</div><div class="line">       throw new IllegalStateException(&quot;Can&apos;t add more than 2 views to a ViewSwitcher&quot;);</div><div class="line">   &#125;</div><div class="line">   super.addView(child, index, params);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>在前面<code>ViewSwitcher</code>的使用中我们点击按钮的时候直接调用了<code>mViewSwitcher.showNext();</code>，既然只能有两个子视图，那我们每次点击都<code>showNext()</code>怎么会没出现越界异常呢？ok，我们还是看看源码中是怎么实现的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">@android.view.RemotableViewMethod</div><div class="line">public void showNext() &#123;</div><div class="line">   setDisplayedChild(mWhichChild + 1);</div><div class="line">&#125;</div><div class="line"></div><div class="line">@android.view.RemotableViewMethod</div><div class="line">public void setDisplayedChild(int whichChild) &#123;</div><div class="line">    mWhichChild = whichChild;</div><div class="line">    if (whichChild &gt;= getChildCount()) &#123;</div><div class="line">        mWhichChild = 0;</div><div class="line">    &#125; else if (whichChild &lt; 0) &#123;</div><div class="line">        mWhichChild = getChildCount() - 1;</div><div class="line">    &#125;</div><div class="line">    boolean hasFocus = getFocusedChild() != null;</div><div class="line">    // This will clear old focus if we had it</div><div class="line">    showOnly(mWhichChild);</div><div class="line">    if (hasFocus) &#123;</div><div class="line">        // Try to retake focus if we had it</div><div class="line">        requestFocus(FOCUS_FORWARD);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过上面的实现我们可以看到当其显示的child索引出现越界之后，会自动的进行循环显示，这也是为什么一直调用<code>showNext()</code>没出现越界异常的原因</p>
+<h4 id="切换原理"><a href="#切换原理" class="headerlink" title="切换原理"></a>切换原理</h4><p>我们再来看看其切换显示过程中视图的显示和隐藏及动画是如何实现的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">void showOnly(int childIndex, boolean animate) &#123;</div><div class="line">    final int count = getChildCount();</div><div class="line">    for (int i = 0; i &lt; count; i++) &#123;</div><div class="line">        final View child = getChildAt(i);</div><div class="line">        if (i == childIndex) &#123;</div><div class="line">            if (animate &amp;&amp; mInAnimation != null) &#123;</div><div class="line">                child.startAnimation(mInAnimation);</div><div class="line">            &#125;</div><div class="line">            child.setVisibility(View.VISIBLE);</div><div class="line">            mFirstTime = false;</div><div class="line">        &#125; else &#123;</div><div class="line">            if (animate &amp;&amp; mOutAnimation != null &amp;&amp; child.getVisibility() == View.VISIBLE) &#123;</div><div class="line">                child.startAnimation(mOutAnimation);</div><div class="line">            &#125; else if (child.getAnimation() == mInAnimation)</div><div class="line">                child.clearAnimation();</div><div class="line">            child.setVisibility(View.GONE);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码实现也很简单，当显示指定索引的child时，将其设置为可见并执行<code>mInAnimation</code>，其他视图在设置为不可见并执行<code>mOutAnimation</code>动画</p>
+<h4 id="Factory作用原理"><a href="#Factory作用原理" class="headerlink" title="Factory作用原理"></a>Factory作用原理</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public void setFactory(ViewFactory factory) &#123;</div><div class="line">    mFactory = factory;</div><div class="line">    obtainView();</div><div class="line">    obtainView();</div><div class="line">&#125;</div><div class="line"></div><div class="line">private View obtainView() &#123;</div><div class="line">    View child = mFactory.makeView();</div><div class="line">    LayoutParams lp = (LayoutParams) child.getLayoutParams();</div><div class="line">    if (lp == null) &#123;</div><div class="line">        lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);</div><div class="line">    &#125;</div><div class="line">    addView(child, lp);</div><div class="line">    return child;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过源码实现我们可以知道<code>mTextSwitcher.setFactory(mFactory)</code>设置完成之后，<code>ViewSwitcher</code>会立刻生成两个视图作为其子视图作为切换显示用。</p>
+<p>示例代码在这里：<a href="https://github.com/huyongli/AndroidDemo/blob/master/app/src/main/java/cn/ittiger/demo/activity/TextSwitcherActivity.java" target="_blank" rel="external">https://github.com/huyongli/AndroidDemo</a></p>
+<hr>
+<p>原创文章，本文采用<a href="https://creativecommons.org/licenses/by/2.5/cn/" target="_blank" rel="external">知识共享署名 2.5(中国大陆许可协议)</a>进行许可，欢迎转载，但转载请注明来自<a href="ittiger.cn">ittiger.cn</a>，并保证转载后文章内容的完整性。本人(laohu)保留所有版权相关权利。</p>
+
+        
+        </div>
+
+        <!-- 打赏 -->
+        
+            
+              <!-- css -->
+              <style type="text/css">
+                  .center {
+                      text-align: center;
+                  }
+                  .hidden {
+                      display: none;
+                  }
+                .donate_bar a.btn_donate{
+                  display: inline-block;
+                  width: 82px;
+                  height: 82px;
+                  background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+                  _background: url("http://7xsl28.com1.z0.glb.clouddn.com/btn_reward.gif") no-repeat;
+
+                  <!-- http://img.t.sinajs.cn/t5/style/images/apps_PRF/e_media/btn_reward.gif
+                       因为本 hexo 生成的博客所用的 theme 的 a:hover 带动画效果，
+                     为了在让打赏按钮显示效果正常 而 添加了以下几行 css，
+                     嵌入其它博客时不一定要它们。 -->
+                  -webkit-transition: background 0s;
+                  -moz-transition: background 0s;
+                  -o-transition: background 0s;
+                  -ms-transition: background 0s;
+                  transition: background 0s;
+                  <!-- /让打赏按钮的效果显示正常 而 添加的几行 css 到此结束 -->
+                }
+
+                .donate_bar a.btn_donate:hover{ background-position: 0px -82px;}
+                .donate_bar .donate_txt {
+                  display: block;
+                  color: #9d9d9d;
+                  font: 14px/2 "Microsoft Yahei";
+                }
+                .bold{ font-weight: bold; }
+              </style>
+              <!-- /css -->
+
+                <!-- Donate Module -->
+                <div id="donate_module">
+
+              <!-- btn_donate & tips -->
+              <div id="donate_board" class="donate_bar center">
+                  <br>
+                  <br>
+                <a id="btn_donate" class="btn_donate" target="_self" href="javascript:;" title="Donate 打赏"></a>
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+                  
+                
+              </div>
+              <!-- /btn_donate & tips -->
+
+              <!-- donate guide -->
+                
+              <div id="donate_guide" class="donate_bar center hidden">
+                    <br>
+                  <br>
+
+                <a href="http://ittiger.cn/img/weixinpay.png" title="用微信扫一扫哦~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/weixinpay.png" title="微信打赏 Colin" height="200px" width="auto"/>
+                </a>
+                    
+                      
+
+                <a href="http://ittiger.cn/img/alipay.png" title="用支付宝扫一扫即可~" class="fancybox" rel="article0">
+                  <img src="http://ittiger.cn/img/alipay.png" title="支付宝打赏 Colin" height="200px" width="auto"/>
+                </a>
+
+                <span class="donate_txt">
+                  对你有帮助？求鼓励，求支持！
+                </span>
+
+              </div>
+              <!-- /donate guide -->
+
+              <!-- donate script -->
+              <script type="text/javascript">
+                document.getElementById('btn_donate').onclick = function() {
+                  $('#donate_board').addClass('hidden');
+                  $('#donate_guide').removeClass('hidden');
+                }
+
+                function donate_on_web(){
+                  $('#donate').submit();
+                    }
+
+                var original_window_onload = window.onload;
+                    window.onload = function () {
+                        if (original_window_onload) {
+                            original_window_onload();
+                        }
+                        document.getElementById('donate_board_wdg').className = 'hidden';
+                }
+              </script>
+              <!-- /donate script -->
+            </div>
+            <br>
+                  <br>
+            <!-- /Donate Module -->
+               
+        
+        <!-- 打赏 -->
+
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
+    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+</div>
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+<style>
+    .bdshare_popup_box {
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .bdshare-button-style0-16 a,
+    .bdshare-button-style0-16 .bds_more {
+        padding-left: 20px;
+        margin: 6px 10px 6px 0;
+    }
+    .bdshare_dialog_list a,
+    .bdshare_popup_list a,
+    .bdshare_popup_bottom a {
+        font-family: 'Microsoft Yahei';
+    }
+    .bdshare_popup_top {
+        display: none;
+    }
+    .bdshare_popup_bottom {
+        height: auto;
+        padding: 5px;
+    }
+</style>
+
+
+</div>
+
+            
+    
+        <a href="http://ittiger.cn/TextSwitcher-ViewSwitcher.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/TextSwitcher-ViewSwitcher.html">评论</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-MediaBrowserService" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -872,456 +1780,6 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
 
 
 
-    <article id="post-Nine-Patch-Affect-Padding-Principle" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/Nine-Patch-Affect-Padding-Principle.html">Android基础之9-Patch(9.PNG)与padding</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/Nine-Patch-Affect-Padding-Principle.html">
-            <time datetime="2016-11-18T04:30:00.000Z" itemprop="datePublished">2016-11-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/9-png/">9.png</a>, <a class="tag-link" href="/tags/Android/">Android</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>在上一篇文章<a href="http://ittiger.cn/My-9.png-hold-the-fat-lady-tour.html">记一次9.png的填坑之旅</a>最后，我留了两个个问题：</p>
-<ol>
-<li>为什么使用<code>9.PNG</code>设置背景之后会改变控件的<code>padding</code>属性值</li>
-<li>在我所遇到的问题中<code>9.PNG</code>明明改变的是<code>padding</code>值为什么却产生了<code>margin</code>的效果   </li>
-</ol>
-<p>这篇文章就来解答这两个问题以及<code>9.PNG</code>使用过程中需要注意的地方。</p>
-<p>各位同学如果没看过<a href="http://ittiger.cn/My-9.png-hold-the-fat-lady-tour.html">记一次9.png的填坑之旅</a>这篇文章可以先去看看，因为我下面所讲的内容都是根据这篇文章中的问题来讲的。</p></p>
-            <p class="article-more-link">
-                <a href="/Nine-Patch-Affect-Padding-Principle.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/Nine-Patch-Affect-Padding-Principle.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/Nine-Patch-Affect-Padding-Principle.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-TextView-SpannableStringBuilder-usage-summary" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/TextView-SpannableStringBuilder-usage-summary.html">TextView之SpannableStringBuilder使用总结</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/TextView-SpannableStringBuilder-usage-summary.html">
-            <time datetime="2016-11-05T12:11:52.000Z" itemprop="datePublished">2016-11-05</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/SpannableStringBuilder/">SpannableStringBuilder</a>, <a class="tag-link" href="/tags/TextView/">TextView</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>最近项目中碰到一个<code>TextView</code>的显示问题，想了各种办法之后，最后还是用<code>SpannableStringBuilder</code>解决的。这篇文章就记录下我的问题的解决过程，同时总结下<code>SpannableStringBuilder</code>在<code>TextView</code>中的不同用法。</p></p>
-            <p class="article-more-link">
-                <a href="/TextView-SpannableStringBuilder-usage-summary.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/TextView-SpannableStringBuilder-usage-summary.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-My-9.png-hold-the-fat-lady-tour" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/My-9.png-hold-the-fat-lady-tour.html">记一次9.png的填坑之旅</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/My-9.png-hold-the-fat-lady-tour.html">
-            <time datetime="2016-11-05T04:26:42.000Z" itemprop="datePublished">2016-11-05</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/9-png/">9.png</a>, <a class="tag-link" href="/tags/Android/">Android</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>最近在项目中进行界面调整时遇到了一个<code>9.PNG</code>图引起的<code>View</code>的<code>padding</code>值不正常导致UI显示不符合预期结果的问题。这篇文章就来记录我当时遇到的问题的表现形式，以及如何根据问题找到产生问题的原因，及其最后的解决办法。</p></p>
-            <p class="article-more-link">
-                <a href="/My-9.png-hold-the-fat-lady-tour.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/My-9.png-hold-the-fat-lady-tour.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/My-9.png-hold-the-fat-lady-tour.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-RxJava-Basic-Use" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/RxJava-Basic-Use.html">RxJava学习之基本使用</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/RxJava-Basic-Use.html">
-            <time datetime="2016-10-27T13:46:42.000Z" itemprop="datePublished">2016-10-27</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Android/">Android</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/RxJava/">RxJava</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p><code>RxJava</code>现在在Android开发中越来越流行，作为一个<code>Android</code>开发者我也必须紧跟步伐学习学习<code>RxJava</code>，这篇文章就记录了<code>RxJava</code>中我认为比较常用的一些场景。</p>
-<p>也给大伙推荐篇比较好的<code>RxJava</code>文章</p>
-<ul>
-<li><a href="http://gank.io/post/560e15be2dca930e00da1083">给 Android 开发者的 RxJava 详解</a></li>
-</ul>
-<h2 id="RxJava基础"><a href="#RxJava基础" class="headerlink" title="RxJava基础"></a>RxJava基础</h2><p>大家都知道<code>JDK</code>中提供了观察者模式的实现，它主要两个重要元素：</p>
-<ul>
-<li>被观察者 <code>Observable</code></li>
-<li>观察者 <code>Observer</code></li>
-</ul>
-<p>至于<code>Java</code>中观察者模式的使用，大家可以自行Google下。</p>
-<p>而<code>RxJava</code>中也有两个重要的元素：</p>
-<ul>
-<li>被观察者(事件源) <code>Observable</code></li>
-<li>观察者(事件订阅者) <code>Subscriber</code></li>
-</ul>
-<p>因此<code>RxJava</code>的设计看起来也有点类似<code>JDK</code>中的观察者模式，都有被观察者和观察者。<br><code>JDK</code>观察者模式中当有操作需要时是由被观察者通知观察者来进行更新操作<br><code>RxJava</code>中是由被观察者<code>Observable</code>发出事件给观察者<code>Subscriber</code>接收，然后观察者<code>Subscriber</code>调用<code>noNext()</code>进行处理，直到调用<code>onComplete)()</code>或<code>onError()</code>结束</p></p>
-            <p class="article-more-link">
-                <a href="/RxJava-Basic-Use.html#more">查看更多</a>
-            </p>
-        
-        </div>
-
-        <!-- 打赏 -->
-        
-        <!-- 打赏 -->
-
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-</div>
-
-            
-    
-        <a href="http://ittiger.cn/RxJava-Basic-Use.html#comments" class="article-comment-link ds-thread-count" data-thread-key="http://ittiger.cn/RxJava-Basic-Use.html">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
     </nav>
@@ -1338,36 +1796,27 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
                     <li>
                         
                         <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Media-Apps/">Media Apps</a></p>
-                            <p class="item-title"><a href="/MediaBrowserService.html" class="title">关于媒体浏览器服务(MediaBrowserService)</a></p>
-                            <p class="item-date"><time datetime="2017-04-30T13:45:04.000Z" itemprop="datePublished">2017-04-30</time></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-data-binding-and-params-transfer.html" class="title">微信小程序之页面数据绑定及页面跳转传参</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:50:02.000Z" itemprop="datePublished">2017-07-17</time></p>
                         </div>
                     </li>
                 
                     <li>
                         
                         <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Material-Design/">Material Design</a></p>
-                            <p class="item-title"><a href="/Behavior-UC-Main-Page.html" class="title">Behavior-UC-Main-Page</a></p>
-                            <p class="item-date"><time datetime="2017-03-30T14:34:05.000Z" itemprop="datePublished">2017-03-30</time></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-tabbar-switch.html" class="title">微信小程序之Tab切换</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:44:58.000Z" itemprop="datePublished">2017-07-17</time></p>
                         </div>
                     </li>
                 
                     <li>
                         
                         <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Material-Design/">Material Design</a></p>
-                            <p class="item-title"><a href="/Header-Footer-scroll-hide.html" class="title">Behavior实现滑动隐藏ToolBar与BottomNavigation</a></p>
-                            <p class="item-date"><time datetime="2017-03-09T07:03:31.000Z" itemprop="datePublished">2017-03-09</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Material-Design/">Material Design</a></p>
-                            <p class="item-title"><a href="/Custom-Behavior-to-fast-back.html" class="title">自定义Behavior实现快速返回效果</a></p>
-                            <p class="item-date"><time datetime="2017-02-28T03:22:00.000Z" itemprop="datePublished">2017-02-28</time></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/小程序/">小程序</a></p>
+                            <p class="item-title"><a href="/weixin-xcx-first-project.html" class="title">微信小程序之入门项目</a></p>
+                            <p class="item-date"><time datetime="2017-07-17T09:40:39.000Z" itemprop="datePublished">2017-07-17</time></p>
                         </div>
                     </li>
                 
@@ -1375,8 +1824,17 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/Android/">Android</a></p>
-                            <p class="item-title"><a href="/Imitate-WeiXin-contact-view.html" class="title">自定义实现微信通讯录效果View</a></p>
-                            <p class="item-date"><time datetime="2016-12-30T04:01:04.000Z" itemprop="datePublished">2016-12-30</time></p>
+                            <p class="item-title"><a href="/TextSwitcher-ViewSwitcher.html" class="title">TextSwitcher与ViewSwitcher学习笔记</a></p>
+                            <p class="item-date"><time datetime="2017-07-12T09:36:51.000Z" itemprop="datePublished">2017-07-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Media-Apps/">Media Apps</a></p>
+                            <p class="item-title"><a href="/MediaBrowserService.html" class="title">关于媒体浏览器服务(MediaBrowserService)</a></p>
+                            <p class="item-date"><time datetime="2017-04-30T13:45:04.000Z" itemprop="datePublished">2017-04-30</time></p>
                         </div>
                     </li>
                 
@@ -1389,7 +1847,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">33</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Material-Design/">Material Design</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Media-Apps/">Media Apps</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Material-Design/">Material Design</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Media-Apps/">Media Apps</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/小程序/">小程序</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -1398,7 +1856,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1407,7 +1865,7 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
     <div class="widget-wrap">
         <h3 class="widget-title">标签云</h3>
         <div class="widget tagcloud">
-            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 14px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/Material-Design/" style="font-size: 14px;">Material Design</a> <a href="/tags/MediaBrowserService/" style="font-size: 10px;">MediaBrowserService</a> <a href="/tags/MediaControllerCompat/" style="font-size: 10px;">MediaControllerCompat</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
+            <a href="/tags/9-png/" style="font-size: 12px;">9.png</a> <a href="/tags/Activity/" style="font-size: 10px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/Behavior/" style="font-size: 14px;">Behavior</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IM/" style="font-size: 18px;">IM</a> <a href="/tags/IndexStickyView/" style="font-size: 10px;">IndexStickyView</a> <a href="/tags/JSONP/" style="font-size: 10px;">JSONP</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 10px;">Lucene</a> <a href="/tags/Material-Design/" style="font-size: 14px;">Material Design</a> <a href="/tags/MediaBrowserService/" style="font-size: 10px;">MediaBrowserService</a> <a href="/tags/MediaControllerCompat/" style="font-size: 10px;">MediaControllerCompat</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/ORM/" style="font-size: 10px;">ORM</a> <a href="/tags/OkHttp/" style="font-size: 12px;">OkHttp</a> <a href="/tags/Openfire/" style="font-size: 18px;">Openfire</a> <a href="/tags/RecyclerView/" style="font-size: 16px;">RecyclerView</a> <a href="/tags/Retrofit/" style="font-size: 14px;">Retrofit</a> <a href="/tags/RxJava/" style="font-size: 10px;">RxJava</a> <a href="/tags/SQLite/" style="font-size: 10px;">SQLite</a> <a href="/tags/Shape/" style="font-size: 10px;">Shape</a> <a href="/tags/SpannableStringBuilder/" style="font-size: 10px;">SpannableStringBuilder</a> <a href="/tags/TableLayout/" style="font-size: 10px;">TableLayout</a> <a href="/tags/TextSwitcher/" style="font-size: 10px;">TextSwitcher</a> <a href="/tags/TextView/" style="font-size: 10px;">TextView</a> <a href="/tags/TigerDB/" style="font-size: 10px;">TigerDB</a> <a href="/tags/TigerOkHttp/" style="font-size: 10px;">TigerOkHttp</a> <a href="/tags/Tips/" style="font-size: 10px;">Tips</a> <a href="/tags/ViewSwitcher/" style="font-size: 10px;">ViewSwitcher</a> <a href="/tags/WordPress/" style="font-size: 18px;">WordPress</a> <a href="/tags/Zip解压/" style="font-size: 10px;">Zip解压</a> <a href="/tags/smack/" style="font-size: 18px;">smack</a> <a href="/tags/vsftpd/" style="font-size: 10px;">vsftpd</a> <a href="/tags/导航/" style="font-size: 10px;">导航</a> <a href="/tags/小程序/" style="font-size: 14px;">小程序</a> <a href="/tags/崩溃/" style="font-size: 10px;">崩溃</a> <a href="/tags/生命周期/" style="font-size: 10px;">生命周期</a> <a href="/tags/百度地图/" style="font-size: 10px;">百度地图</a> <a href="/tags/相机/" style="font-size: 12px;">相机</a> <a href="/tags/资源适配/" style="font-size: 10px;">资源适配</a> <a href="/tags/退出App/" style="font-size: 10px;">退出App</a> <a href="/tags/阿里云/" style="font-size: 18px;">阿里云</a>
         </div>
     </div>
 

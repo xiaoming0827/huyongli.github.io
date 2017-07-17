@@ -16,7 +16,14 @@
     </url>
 
     <url>
-        <loc>http://ittiger.cn/tags/Shape/</loc>
+        <loc>http://ittiger.cn/tags/Activity/</loc>
+        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</loc>
         <lastmod>2016-07-29T01:19:10.922Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -30,14 +37,7 @@
     </url>
 
     <url>
-        <loc>http://ittiger.cn/tags/Activity/</loc>
-        <lastmod>2016-07-29T01:19:10.922Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://ittiger.cn/tags/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</loc>
+        <loc>http://ittiger.cn/tags/Shape/</loc>
         <lastmod>2016-07-29T01:19:10.922Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -289,13 +289,6 @@
     </url>
 
     <url>
-        <loc>http://ittiger.cn/tags/Android/</loc>
-        <lastmod>2017-05-02T03:27:43.789Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://ittiger.cn/tags/MediaBrowserService/</loc>
         <lastmod>2017-05-02T03:27:43.789Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -305,6 +298,34 @@
     <url>
         <loc>http://ittiger.cn/tags/MediaControllerCompat/</loc>
         <lastmod>2017-05-02T03:27:43.789Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/TextSwitcher/</loc>
+        <lastmod>2017-07-17T10:06:06.190Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/ViewSwitcher/</loc>
+        <lastmod>2017-07-17T10:06:06.190Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/Android/</loc>
+        <lastmod>2017-07-17T10:06:27.872Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://ittiger.cn/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+        <lastmod>2017-07-17T10:06:27.872Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
